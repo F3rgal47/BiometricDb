@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApplication1
+﻿namespace BiometricDb
 {
     partial class EmployeeAdmin
     {
@@ -134,6 +134,7 @@
             this.Controls.Add(this.panel1);
             this.Name = "EmployeeAdmin";
             this.Text = "Employee Admin";
+            this.Load += new System.EventHandler(this.EmployeeAdmin_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

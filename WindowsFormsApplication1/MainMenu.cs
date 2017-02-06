@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsFormsApplication1
+namespace BiometricDb
 {
     public partial class MainMenu : Form
     {
@@ -24,11 +24,16 @@ namespace WindowsFormsApplication1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Visible=false;
+           this.Visible=false;
             EmployeeAdmin employeeForm = new EmployeeAdmin();
             employeeForm.Bounds = this.Bounds;
             employeeForm.ShowDialog();
-            this.Visible=true;
+           this.Visible=true;
+        }
+
+        private void MainMenu_Load(object sender, EventArgs e)
+        {
+
         }
 
 

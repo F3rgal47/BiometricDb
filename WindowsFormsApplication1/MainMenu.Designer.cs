@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApplication1
+﻿namespace BiometricDb
 {
     partial class MainMenu
     {
@@ -104,6 +104,7 @@
             this.Controls.Add(this.panel1);
             this.Name = "MainMenu";
             this.Text = "Menu";
+            this.Load += new System.EventHandler(this.MainMenu_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

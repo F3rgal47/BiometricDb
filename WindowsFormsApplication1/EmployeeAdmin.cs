@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsFormsApplication1
+namespace BiometricDb
 {
     public partial class EmployeeAdmin : Form
     {
@@ -41,6 +41,11 @@ namespace WindowsFormsApplication1
             SearchEmployee SearchEmployeeForm = new SearchEmployee();
             SearchEmployeeForm.ShowDialog();
             this.Visible = true;
+        }
+
+        private void EmployeeAdmin_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsFormsApplication1
+namespace BiometricDb
 {
     public partial class NewEmployee : Form
     {
@@ -60,7 +60,7 @@ namespace WindowsFormsApplication1
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button_Save_Click(object sender, EventArgs e)
         {
             con = new System.Data.SqlClient.SqlConnection();
 
@@ -109,7 +109,7 @@ namespace WindowsFormsApplication1
             }
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void button_New_Click(object sender, EventArgs e)
         {
             textBox10.Enabled = false;
             textBox1.Enabled = true;
@@ -130,7 +130,7 @@ namespace WindowsFormsApplication1
         }
         
 
-        private void button7_Click(object sender, EventArgs e)
+        private void button_Search_Click(object sender, EventArgs e)
         {
 
             //if (textBox10.Text = ){
@@ -224,7 +224,7 @@ namespace WindowsFormsApplication1
 
         }
 
-        private void buttonDelete_Click(object sender, EventArgs e)
+        private void button_Delete_Click(object sender, EventArgs e)
         {
             string query = "DELETE FROM EmployeeDetails WHERE Id = @id";
             SqlCommand cmd1 = new SqlCommand(query, con);
@@ -242,6 +242,11 @@ namespace WindowsFormsApplication1
             }
 
             cleanup();
+
+        }
+
+        private void button_FingerReg_Click(object sender, EventArgs e)
+        {
 
         }
 

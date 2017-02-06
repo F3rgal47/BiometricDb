@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApplication1
+﻿namespace BiometricDb
 {
     partial class NewEmployee
     {
@@ -120,7 +120,7 @@
             this.buttonSave.TabIndex = 5;
             this.buttonSave.Text = "Save";
             this.buttonSave.UseVisualStyleBackColor = false;
-            this.buttonSave.Click += new System.EventHandler(this.button2_Click);
+            this.buttonSave.Click += new System.EventHandler(this.button_Save_Click);
             // 
             // buttonCancel
             // 
@@ -355,6 +355,7 @@
             this.buttonFingerReg.TabIndex = 32;
             this.buttonFingerReg.Text = "Register Finger";
             this.buttonFingerReg.UseVisualStyleBackColor = false;
+            this.buttonFingerReg.Click += new System.EventHandler(this.button_FingerReg_Click);
             // 
             // buttonNew
             // 
@@ -367,7 +368,7 @@
             this.buttonNew.TabIndex = 33;
             this.buttonNew.Text = "New";
             this.buttonNew.UseVisualStyleBackColor = false;
-            this.buttonNew.Click += new System.EventHandler(this.button5_Click);
+            this.buttonNew.Click += new System.EventHandler(this.button_New_Click);
             // 
             // buttonDelete
             // 
@@ -381,7 +382,7 @@
             this.buttonDelete.TabIndex = 34;
             this.buttonDelete.Text = "Delete";
             this.buttonDelete.UseVisualStyleBackColor = false;
-            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
+            this.buttonDelete.Click += new System.EventHandler(this.button_Delete_Click);
             // 
             // buttonSearch
             // 
@@ -396,7 +397,7 @@
             this.buttonSearch.Text = "?";
             this.buttonSearch.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.buttonSearch.UseVisualStyleBackColor = false;
-            this.buttonSearch.Click += new System.EventHandler(this.button7_Click);
+            this.buttonSearch.Click += new System.EventHandler(this.button_Search_Click);
             // 
             // NewEmployee
             // 
