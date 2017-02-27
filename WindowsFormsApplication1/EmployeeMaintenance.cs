@@ -64,7 +64,7 @@ namespace BiometricDb
         {
             con = new System.Data.SqlClient.SqlConnection();
 
-            con.ConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\WindowsFormsApplication1\\WindowsFormsApplication1\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
+            con.ConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
             //SqlConnection con = new SqlConnection("Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\\InD.mdf;Integrated Security=True");
             //SqlConnection con = new SqlConnection("Server=(localdb)\v11.0;Integrated Security=true;AttachDbFileName=InD.mdf");
 
@@ -138,7 +138,7 @@ namespace BiometricDb
             //} 
             //else{
             con = new System.Data.SqlClient.SqlConnection();
-            con.ConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\WindowsFormsApplication1\\WindowsFormsApplication1\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
+            con.ConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
             con.Open();
 
 

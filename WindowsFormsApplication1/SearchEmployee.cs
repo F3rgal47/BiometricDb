@@ -27,36 +27,46 @@ namespace BiometricDb
         private void button2_Click(object sender, EventArgs e)
         {
             con = new System.Data.SqlClient.SqlConnection();
-            con.ConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\WindowsFormsApplication1\\WindowsFormsApplication1\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
+            con.ConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
             con.Open();
 
-            
 
-            using (var cmd = new SqlCommand("select * from EmployeeDetails where Id = @id or Forename like '%@forname%'or Surname like '%@surname%'" , con))
+
+            using (var cmd = new SqlCommand("Select * from EmployeeDetails where Id = @id OR Forename like '" + textBox1.Text + "%' " + "OR Surname like '" + textBox2.Text + "%'", con))
+           
             {
                 cmd.Parameters.AddWithValue("@id", textBox10.Text);
-                cmd.Parameters.AddWithValue("@forename", textBox1.Text);
-                cmd.Parameters.AddWithValue("@surname", textBox2.Text);
-                
+                //cmd.Parameters.AddWithValue("@forename", textBox1.Text);
+                //cmd.Parameters.AddWithValue("@surname", textBox2.Text);
+
 
                 SqlDataAdapter daEmployee = new SqlDataAdapter(cmd);
                 DataSet dsEmployeeSearch = new DataSet("employeeSearch");
                 daEmployee.MissingSchemaAction = MissingSchemaAction.AddWithKey;
                 daEmployee.Fill(dsEmployeeSearch, "EmployeeDetails");
 
-                
-                this.Visible = false;
-                SearchEmployee SearchEmployeeForm = new SearchEmployee();
-                SearchEmployeeForm.ShowDialog();
-                this.Visible = true;
+                DataTable tblEmployeeDetails;
+                tblEmployeeDetails = dsEmployeeSearch.Tables["EmployeeDetails"];
 
+
+            dataGridView1.Columns.Add("EmpID", "ID");
+            dataGridView1.Columns.Add("FirstName", "FirstName");
+            dataGridView1.Columns.Add("LastName", "LastName");
+            dataGridView1.Columns.Add("email", "email");
+            
+            int row = dsEmployeeSearch.Tables["EmployeeDetails"].Rows.Count -1;
+
+            for (int r = 0; r <= row; r++)
+            {
+                dataGridView1.Rows.Add();
+                dataGridView1.Rows[r].Cells[0].Value = dsEmployeeSearch.Tables["EmployeeDetails"].Rows[r].ItemArray[0];
+                dataGridView1.Rows[r].Cells[1].Value = dsEmployeeSearch.Tables["EmployeeDetails"].Rows[r].ItemArray[1];
+                dataGridView1.Rows[r].Cells[2].Value = dsEmployeeSearch.Tables["EmployeeDetails"].Rows[r].ItemArray[2];
+                dataGridView1.Rows[r].Cells[3].Value = dsEmployeeSearch.Tables["EmployeeDetails"].Rows[r].ItemArray[3];
 
             }
-        }
-
-        private void SearchEmployee_Load(object sender, EventArgs e)
-        {
-
+        
+            }
         }
 
     }
