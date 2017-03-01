@@ -1,6 +1,6 @@
 ﻿namespace BiometricDb
 {
-    partial class NewEmployee
+    partial class EmployeeMaintenance
     {
         /// <summary>
         /// Required designer variable.
@@ -98,6 +98,7 @@
             // buttonBrowsePhoto
             // 
             this.buttonBrowsePhoto.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.buttonBrowsePhoto.Enabled = false;
             this.buttonBrowsePhoto.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonBrowsePhoto.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.buttonBrowsePhoto.Location = new System.Drawing.Point(17, 266);
@@ -343,6 +344,7 @@
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(136, 20);
             this.textBox11.TabIndex = 31;
+            this.textBox11.TextChanged += new System.EventHandler(this.textBox11_TextChanged);
             // 
             // buttonFingerReg
             // 
@@ -399,7 +401,7 @@
             this.buttonSearch.UseVisualStyleBackColor = false;
             this.buttonSearch.Click += new System.EventHandler(this.button_Search_Click);
             // 
-            // NewEmployee
+            // EmployeeMaintenance
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -438,7 +440,7 @@
             this.Controls.Add(this.buttonBrowsePhoto);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.panel1);
-            this.Name = "NewEmployee";
+            this.Name = "EmployeeMaintenance";
             this.Text = "New Employee";
             this.Load += new System.EventHandler(this.NewEmployee_Load);
             this.panel1.ResumeLayout(false);

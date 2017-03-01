@@ -36,6 +36,14 @@ namespace BiometricDb
 
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Visible = false;
+            FoyerTerminal accessForm = new FoyerTerminal();
+            accessForm.ShowDialog();
+            this.Visible = true;
+        }
+
 
     }
 

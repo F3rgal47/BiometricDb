@@ -25,7 +25,7 @@ namespace BiometricDb
         private void button2_Click(object sender, EventArgs e)
         {
             this.Visible = false;
-            NewEmployee newEmployeeForm = new NewEmployee();
+            EmployeeMaintenance newEmployeeForm = new EmployeeMaintenance();
             newEmployeeForm.ShowDialog();
             this.Visible = true;
         }

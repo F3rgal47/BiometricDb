@@ -13,6 +13,7 @@ namespace BiometricDb
 {
     public partial class SearchEmployee : Form
     {
+        public static string employeeId;
         System.Data.SqlClient.SqlConnection con;
         public SearchEmployee()
         {
@@ -49,10 +50,6 @@ namespace BiometricDb
                 tblEmployeeDetails = dsEmployeeSearch.Tables["EmployeeDetails"];
 
 
-            dataGridView1.Columns.Add("EmpID", "ID");
-            dataGridView1.Columns.Add("FirstName", "FirstName");
-            dataGridView1.Columns.Add("LastName", "LastName");
-            dataGridView1.Columns.Add("email", "email");
             
             int row = dsEmployeeSearch.Tables["EmployeeDetails"].Rows.Count -1;
 
@@ -65,8 +62,19 @@ namespace BiometricDb
                 dataGridView1.Rows[r].Cells[3].Value = dsEmployeeSearch.Tables["EmployeeDetails"].Rows[r].ItemArray[3];
 
             }
-        
+            button3.Enabled = true;
+           
+
             }
+        } 
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            employeeId = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+            this.Visible = false;
+            EmployeeMaintenance SearchEmployeeForm = new EmployeeMaintenance();
+            SearchEmployeeForm.ShowDialog();
+            this.Visible = true;
         }
 
     }
