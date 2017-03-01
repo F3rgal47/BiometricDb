@@ -1,6 +1,6 @@
 ﻿namespace BiometricDb
 {
-    partial class FoyerTerminal
+    partial class Terminal
     {
         /// <summary>
         /// Required designer variable.
