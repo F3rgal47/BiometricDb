@@ -88,13 +88,15 @@ namespace BiometricDb
              string query;
              if (textBox10.Text != "")
              {
-                 query = "UPDATE EmployeeDetails SET Forename=@forename, Surname=@surname, Email=@email, TelephoneNo=@phoneNo, AccessLevel=@accessLevel, BiometricMarker=@bioMarker, AddressLine1=@addressLine1, AddressLine2=@addressLine2, AddressLine3= @addressLine3, City=@city, Postcode=@postcode WHERE Id =" + textBox10.Text;
+                 query = "UPDATE EmployeeDetails SET Forename=@forename, Surname=@surname, Email=@email, TelephoneNo=@phoneNo, AccessLevel=@accessLevel, AddressLine1=@addressLine1, AddressLine2=@addressLine2, AddressLine3= @addressLine3, City=@city, Postcode=@postcode WHERE Id =" + textBox10.Text;
                  //, Photo=@photo
+                 //BiometricMarker=@bioMarker,
              }
              else
              {
-                 query = "INSERT INTO EmployeeDetails(Forename, Surname, Email, TelephoneNo, AccessLevel, BiometricMarker, AddressLine1, AddressLine2, AddressLine3, City, Postcode, Photo) VALUES(@forename, @surname, @email, @phoneNo, @accessLevel, @bioMarker, @addressLine1, @addressLine2, @addressLine3, @city, @postcode)";
-                 //, @photo
+                 query = "INSERT INTO EmployeeDetails(Forename, Surname, Email, TelephoneNo, AccessLevel, AddressLine1, AddressLine2, AddressLine3, City, Postcode) VALUES(@forename, @surname, @email, @phoneNo, @accessLevel, @addressLine1, @addressLine2, @addressLine3, @city, @postcode)";
+                 //, @photo , Photo
+                 //BiometricMarker, @bioMarker,
              }
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
@@ -123,8 +125,8 @@ namespace BiometricDb
                 cmd.Parameters.AddWithValue("@phoneNo", textBox4.Text);
                 cmd.Parameters.AddWithValue("@accessLevel", accessLevel);
 
-                int Biomarker = Int32.Parse(textBox11.Text);
-                cmd.Parameters.AddWithValue("@bioMarker", Biomarker);
+                //int Biomarker = Int32.Parse(textBox11.Text);
+                //cmd.Parameters.AddWithValue("@bioMarker", Biomarker);
 
                 cmd.Parameters.AddWithValue("@addressLine1", textBox5.Text);
                 cmd.Parameters.AddWithValue("@addressLine2", textBox6.Text);

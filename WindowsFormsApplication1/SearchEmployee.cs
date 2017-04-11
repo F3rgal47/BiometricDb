@@ -27,13 +27,14 @@ namespace BiometricDb
 
         private void button2_Click(object sender, EventArgs e)
         {
+            gridCleanUp();
             con = new System.Data.SqlClient.SqlConnection();
             con.ConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
             con.Open();
+            String commandString = createCommand();
 
-
-
-            using (var cmd = new SqlCommand("Select * from EmployeeDetails where Id = @id OR Forename like '" + textBox1.Text + "%' " + "OR Surname like '" + textBox2.Text + "%'", con))
+          
+            using (var cmd = new SqlCommand(commandString, con))
            
             {
                 cmd.Parameters.AddWithValue("@id", textBox10.Text);
@@ -75,6 +76,35 @@ namespace BiometricDb
             EmployeeMaintenance SearchEmployeeForm = new EmployeeMaintenance();
             SearchEmployeeForm.ShowDialog();
             this.Visible = true;
+        }
+
+        public void gridCleanUp()
+        {
+            this.dataGridView1.DataSource = null;
+            this.dataGridView1.Rows.Clear();
+
+        }
+
+        public string createCommand()
+        {
+                string commandString;
+
+                if (textBox1.Text != "" && textBox2.Text == "")
+                {
+                  commandString = "SELECT * FROM EmployeeDetails WHERE Id = @id OR Forename like '" + textBox1.Text + "%' ";
+                  return commandString;
+                }
+                else if (textBox1.Text == "" && textBox2.Text != "")
+                {
+                    commandString = "SELECT * FROM EmployeeDetails WHERE Id = @id OR Surname like '" + textBox2.Text + "%' ";
+                  return commandString;
+                }
+                else
+                {
+                     commandString = "SELECT * FROM EmployeeDetails WHERE Id = @id OR Forename like '" + textBox1.Text + "%' AND Surname like '" + textBox2.Text + "%' ";
+                  return commandString;
+                }
+
         }
 
     }
