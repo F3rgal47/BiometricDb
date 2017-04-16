@@ -59,6 +59,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LocationAdmin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LocationAdmin.Designer.cs">
+      <DependentUpon>LocationAdmin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocationMaintenance.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LocationMaintenance.Designer.cs">
+      <DependentUpon>LocationMaintenance.cs</DependentUpon>
+    </Compile>
     <Compile Include="Terminal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,6 +109,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="LocationAdmin.resx">
+      <DependentUpon>LocationAdmin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LocationMaintenance.resx">
+      <DependentUpon>LocationMaintenance.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Terminal.resx">
       <DependentUpon>Terminal.cs</DependentUpon>
     </EmbeddedResource>

@@ -26,10 +26,13 @@ namespace BiometricDb
            this.Visible=true;
         }
 
-        private void MainMenu_Load(object sender, EventArgs e)
-        {
-
-        }
+        //private void button_3_Click(object sender, EventArgs e)
+        //{
+        //    this.Visible = false;
+        //    LocationAdmin locationForm = new LocationAdmin();
+        //    locationForm.ShowDialog();
+        //    this.Visible = true;
+        //}
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -39,8 +42,16 @@ namespace BiometricDb
             this.Visible = true;
         }
 
+        private void button_3_Click(object sender, EventArgs e)
+        {
+            this.Visible = false;
+            LocationAdmin locationForm = new LocationAdmin();
+            locationForm.ShowDialog();
+            this.Visible = true;
+        }
 
+
+
+      
     }
-
-
 }

@@ -35,6 +35,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.button_3 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -70,7 +71,6 @@
             this.label1.Size = new System.Drawing.Size(271, 43);
             this.label1.TabIndex = 0;
             this.label1.Text = "Company Name";
-            //this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // button1
             // 
@@ -99,7 +99,7 @@
             this.button2.BackColor = System.Drawing.SystemColors.HotTrack;
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.button2.Location = new System.Drawing.Point(297, 260);
+            this.button2.Location = new System.Drawing.Point(297, 309);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(249, 52);
             this.button2.TabIndex = 8;
@@ -107,19 +107,32 @@
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // button_3
+            // 
+            this.button_3.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.button_3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_3.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.button_3.Location = new System.Drawing.Point(297, 251);
+            this.button_3.Name = "button_3";
+            this.button_3.Size = new System.Drawing.Size(249, 52);
+            this.button_3.TabIndex = 9;
+            this.button_3.Text = "Location Admin";
+            this.button_3.UseVisualStyleBackColor = false;
+            this.button_3.Click += new System.EventHandler(this.button_3_Click);
+            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(881, 644);
+            this.Controls.Add(this.button_3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel1);
             this.Name = "MainMenu";
             this.Text = "Menu";
-            this.Load += new System.EventHandler(this.MainMenu_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -135,6 +148,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button_3;
     }
 }
 
