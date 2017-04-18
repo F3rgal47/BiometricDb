@@ -14,11 +14,39 @@ namespace BiometricDb
 {
     public partial class Terminal : Form
     {
-        int accessLevel;
+        int EmployeeAccesLevel;
+        int accessLevel, locationId;
+        String connectionAddress = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
         System.Data.SqlClient.SqlConnection con;
         public Terminal()
         {
             InitializeComponent();
+            con = new System.Data.SqlClient.SqlConnection();
+            con.ConnectionString = connectionAddress;
+            con.Open();
+
+            using (var cmd = new SqlCommand("Select * from Locations", con))
+            {
+
+                SqlDataAdapter daLocation = new SqlDataAdapter(cmd);
+                DataSet dsLocationSearch = new DataSet("LocationSearch");
+                daLocation.MissingSchemaAction = MissingSchemaAction.AddWithKey;
+                daLocation.Fill(dsLocationSearch, "Locations");
+
+                DataTable tblLocationDetails;
+                tblLocationDetails = dsLocationSearch.Tables["Locations"];
+
+                foreach (DataRow drCurrent in tblLocationDetails.Rows)
+                {
+                    String locationName = drCurrent["LocationName"].ToString();
+                    String locationAccessLevel = drCurrent["AccessLevel"].ToString();
+
+                    comboBox1.Items.Add((locationName));
+                    comboBox1.ValueMember = locationAccessLevel;
+                    comboBox1.DisplayMember = locationName;
+
+                }
+            }
         }
 
         private void buttonNew_Click(object sender, EventArgs e)
@@ -33,7 +61,7 @@ namespace BiometricDb
             //} 
             //else{
             con = new System.Data.SqlClient.SqlConnection();
-            con.ConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
+            con.ConnectionString = connectionAddress;
             con.Open();
 
 
@@ -41,8 +69,6 @@ namespace BiometricDb
             {
                 int Biomarker = Int32.Parse(textBox10.Text);
                 cmd.Parameters.AddWithValue("@bioMarker", Biomarker);
-
-               
 
                 SqlDataAdapter daEmployee = new SqlDataAdapter(cmd);
                 DataSet dsEmployeeSearch = new DataSet("employeeSearch");
@@ -58,7 +84,8 @@ namespace BiometricDb
                     textBox1.Text = drCurrent["Forename"].ToString();
                     textBox3.Text = drCurrent["Surname"].ToString();
                     textBox4.Text = drCurrent["AccessLevel"].ToString();
-                   
+                    EmployeeAccesLevel = Int32.Parse(textBox4.Text);
+
 
                     //if (drCurrent["Photo"].ToString() != "")
                     //{
@@ -81,83 +108,75 @@ namespace BiometricDb
 
                 }
 
-               
 
-              
                 buttonGo.Enabled = false;
                 textBox10.Enabled = false;
-                accessLevel = checkAccess(accessLevel);
-
-                int EmployeeAccesLevel = 0;
-
-                if (textBox4.Text == "1")
-                {
-                    EmployeeAccesLevel = 1;
-                }
-                else if (textBox4.Text == "2")
-                {
-                    EmployeeAccesLevel = 2;
-                }
-                else if (textBox4.Text == "3")
-                {
-                    EmployeeAccesLevel = 3;
-                }
+               
 
                 if (EmployeeAccesLevel >= accessLevel)
                 {
                     textBox5.Text = "Granted";
                     textBox5.BackColor = Color.LimeGreen;
-                    
+
                 }
                 else if (EmployeeAccesLevel < accessLevel)
                 {
                     textBox5.Text = "Denied";
                     textBox5.BackColor = Color.Red;
-                   
+
                 }
 
             }
-           
-            cleanUp();
+            con.Close();
+            updateAndcleanUp();
         }
 
+
+
+
+        public async void updateAndcleanUp()
+        {
+
+            if (textBox5.Text == "Granted")
+            {
+                con.ConnectionString = connectionAddress;
+                con.Open();
+
+                String query = "INSERT INTO EmployeeAccessHistory(EmployeeId, AreaId, Time, AccessType, Date) VALUES(@employeeId, @areaId, @time, @accessType, @date)";
+               
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                  
+                    cmd.Parameters.AddWithValue("@employeeId", textBox2.Text);
+                    cmd.Parameters.AddWithValue("@areaId", locationId);
+
+                    if (comboBox2.SelectedItem == "Enter")
+                    {
+                    cmd.Parameters.AddWithValue("@accessType", "Enter");
+                    }
+                    else
+                    {
+                    cmd.Parameters.AddWithValue("@accessType", "Exit");
+                    }
+                  
+
+                    cmd.Parameters.AddWithValue("time", DateTime.Now.ToString("HH:mm:ss"));
+                    cmd.Parameters.AddWithValue("@date", DateTime.Now.Date);
+
+                    // execute the insert statement and store the result
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+
+                }
+            }
         
-
-        int checkAccess(int x)
-        {
-            
-            if (comboBox1.SelectedItem == "Foyer")
-            {
-                return 1;
-            }
-            else if (comboBox1.SelectedItem == "Server Room")
-            {
-                return 3;
-            }
-            else if (comboBox1.SelectedItem == "Canteen")
-            {
-                return 1;
-            }
-            else if (comboBox1.SelectedItem == "Manager Lounge")
-            {
-                return 2;
-            }
-            else if (comboBox1.SelectedItem == "Supplies Room")
-            {
-                return 2;
-            }
-            else return 1;
-        }
-
-        public async void cleanUp()
-        {
             await Task.Delay(5000);
             textBox10.Text = "";
             textBox1.Text = "";
             textBox2.Text = "";
             textBox3.Text = "";
             textBox4.Text = "";
-            comboBox1.Text = "";
             textBox5.Text = "";
             textBox5.BackColor = Color.White;
             textBox10.Enabled = true;
@@ -167,11 +186,40 @@ namespace BiometricDb
             textBox4.Enabled = false;
             textBox5.Enabled = false;
             pictureBox1.Image = null;
-            
+            buttonGo.Enabled = true;
+
 
 
         }
 
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+            using (var cmd = new SqlCommand("Select * from Locations WHERE LocationName = @locationName", con))
+            {
 
+                cmd.Parameters.AddWithValue("@locationName", this.comboBox1.GetItemText(this.comboBox1.SelectedItem));
+                SqlDataAdapter daLocation = new SqlDataAdapter(cmd);
+                DataSet dsLocationSearch = new DataSet("LocationSearch");
+                daLocation.MissingSchemaAction = MissingSchemaAction.AddWithKey;
+                daLocation.Fill(dsLocationSearch, "Locations");
+
+                DataTable tblLocationDetails;
+                tblLocationDetails = dsLocationSearch.Tables["Locations"];
+
+                foreach (DataRow drCurrent in tblLocationDetails.Rows)
+                {
+                     String locationIdgrab = drCurrent["Id"].ToString();
+                     locationId = Int32.Parse(locationIdgrab);
+                     String accessLevelgrab = drCurrent["AccessLevel"].ToString();
+                     accessLevel = Int32.Parse(accessLevelgrab);
+                }
+            }
+            String accessMessage = "This Area Requires an Access Level of " + accessLevel;
+            label7.Text = accessMessage;
+            textBox10.Enabled = true;
+            buttonGo.Enabled = true;
+        }                                
+        
     }
 }

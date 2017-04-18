@@ -208,6 +208,7 @@
             this.Controls.Add(this.panel1);
             this.Name = "LocationMaintenance";
             this.Text = "LocationMaintenance";
+            this.Load += new System.EventHandler(this.LocationMaintenance_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);

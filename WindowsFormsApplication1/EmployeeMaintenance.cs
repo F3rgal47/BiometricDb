@@ -88,13 +88,13 @@ namespace BiometricDb
              string query;
              if (textBox10.Text != "")
              {
-                 query = "UPDATE EmployeeDetails SET Forename=@forename, Surname=@surname, Email=@email, TelephoneNo=@phoneNo, AccessLevel=@accessLevel, AddressLine1=@addressLine1, AddressLine2=@addressLine2, AddressLine3= @addressLine3, City=@city, Postcode=@postcode WHERE Id =" + textBox10.Text;
+                 query = "UPDATE EmployeeDetails SET Forename=@forename, Surname=@surname, Email=@email, TelephoneNo=@phoneNo, AccessLevel=@accessLevel,BiometricMarker=@bioMarker, AddressLine1=@addressLine1, AddressLine2=@addressLine2, AddressLine3= @addressLine3, City=@city, Postcode=@postcode WHERE Id =" + textBox10.Text;
                  //, Photo=@photo
                  //BiometricMarker=@bioMarker,
              }
              else
              {
-                 query = "INSERT INTO EmployeeDetails(Forename, Surname, Email, TelephoneNo, AccessLevel, AddressLine1, AddressLine2, AddressLine3, City, Postcode) VALUES(@forename, @surname, @email, @phoneNo, @accessLevel, @addressLine1, @addressLine2, @addressLine3, @city, @postcode)";
+                 query = "INSERT INTO EmployeeDetails(Forename, Surname, Email, TelephoneNo, BiometricMarker, AccessLevel, AddressLine1, AddressLine2, AddressLine3, City, Postcode) VALUES(@forename, @surname, @bioMarker, @email, @phoneNo, @accessLevel, @addressLine1, @addressLine2, @addressLine3, @city, @postcode)";
                  //, @photo , Photo
                  //BiometricMarker, @bioMarker,
              }
@@ -115,9 +115,6 @@ namespace BiometricDb
                     accessLevel = 3;
                 }
 
-
-
-
                 con.Open();
                 cmd.Parameters.AddWithValue("@forename", textBox1.Text);
                 cmd.Parameters.AddWithValue("@surname", textBox2.Text);
@@ -125,8 +122,8 @@ namespace BiometricDb
                 cmd.Parameters.AddWithValue("@phoneNo", textBox4.Text);
                 cmd.Parameters.AddWithValue("@accessLevel", accessLevel);
 
-                //int Biomarker = Int32.Parse(textBox11.Text);
-                //cmd.Parameters.AddWithValue("@bioMarker", Biomarker);
+                int Biomarker = Int32.Parse(textBox11.Text);
+                cmd.Parameters.AddWithValue("@bioMarker", Biomarker);
 
                 cmd.Parameters.AddWithValue("@addressLine1", textBox5.Text);
                 cmd.Parameters.AddWithValue("@addressLine2", textBox6.Text);
@@ -178,7 +175,6 @@ namespace BiometricDb
             search(textBox10.Text);   
         }
 
-
         public void cleanup()
         {
 
@@ -210,8 +206,7 @@ namespace BiometricDb
             buttonFingerReg.Enabled = false;
             buttonBrowsePhoto.Enabled = false;
             buttonSearch.Enabled = true;
-            pictureBox1.Image = null;
-            
+            pictureBox1.Image = null;          
 
         }
 
