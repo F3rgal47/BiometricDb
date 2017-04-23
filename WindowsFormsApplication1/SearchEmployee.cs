@@ -64,7 +64,7 @@ namespace BiometricDb
 
             }
             button3.Enabled = true;
-           
+            button4.Enabled = true;
 
             }
         } 
@@ -107,5 +107,66 @@ namespace BiometricDb
 
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            // creating Excel Application
+            Microsoft.Office.Interop.Excel._Application app  = new Microsoft.Office.Interop.Excel.Application();
+ 
+            // creating new WorkBook within Excel application
+            Microsoft.Office.Interop.Excel._Workbook workbook =  app.Workbooks.Add(Type.Missing);
+           
+ 
+            // creating new Excelsheet in workbook
+             Microsoft.Office.Interop.Excel._Worksheet worksheet = null;                   
+           
+           // see the excel sheet behind the program
+            app.Visible = true;
+          
+           // get the reference of first sheet. By default its name is Sheet1.
+           // store its reference to worksheet
+            worksheet = workbook.Sheets["Sheet1"];
+            worksheet = workbook.ActiveSheet;
+ 
+            // changing the name of active sheet
+            worksheet.Name = "Exported from Employee Search";
+
+            //Add title to the report
+            DateTime dateTime = DateTime.UtcNow.Date;
+            worksheet.Cells[1] = "Employee Search Report        " + dateTime.ToString("dd/MM/yyyy");
+            worksheet.get_Range("A1", "A1").Font.Size = 14;
+            worksheet.get_Range("A1", "A1").Font.Bold = true;
+
+            // storing header part in Excel
+            for(int i=1;i<dataGridView1.Columns.Count+1;i++)
+            {
+                worksheet.get_Range("A1", "D3").Font.Size = 12;
+                worksheet.get_Range("A1", "D3").Font.Bold = true;
+                worksheet.Cells[3, i] = dataGridView1.Columns[i-1].HeaderText;
+                worksheet.Rows[3].Columns.Autofit();
+            }
+ 
+            // storing Each row and column value to excel sheet
+            for (int i=0; i < dataGridView1.Rows.Count; i++)
+            {
+                for(int j=0;j<dataGridView1.Columns.Count;j++)
+                {
+                    worksheet.Cells[i + 4, j + 1] = dataGridView1.Rows[i].Cells[j].Value.ToString();
+                    //auto fit columns for any size of text
+                    worksheet.Rows[i + 5].Autofit();
+                    //apply border to cell to form a grid
+                    worksheet.Cells[i + 4, j + 1].Borders.Color = System.Drawing.Color.Black.ToArgb();
+                }
+            }
+
+            //sets email Column to autofit text
+            worksheet.Columns["D"].AutoFit();
+        }
+
+        private void SearchEmployee_Load(object sender, EventArgs e)
+        {
+
+        }
+ 
     }
+    
 }

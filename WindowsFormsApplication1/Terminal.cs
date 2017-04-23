@@ -219,6 +219,11 @@ namespace BiometricDb
             label7.Text = accessMessage;
             textBox10.Enabled = true;
             buttonGo.Enabled = true;
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
         }                                
         
     }

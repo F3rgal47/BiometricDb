@@ -160,7 +160,6 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(484, 411);
             this.dataGridView1.TabIndex = 38;
-           // this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // EmpID
             // 
@@ -206,8 +205,9 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(253, 34);
             this.button4.TabIndex = 40;
-            this.button4.Text = "View Activity";
+            this.button4.Text = "Export to spreadsheet";
             this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // SearchEmployee
             // 
@@ -229,6 +229,7 @@
             this.Controls.Add(this.textBox1);
             this.Name = "SearchEmployee";
             this.Text = "Enter Employee Id";
+            this.Load += new System.EventHandler(this.SearchEmployee_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
