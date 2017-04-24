@@ -142,14 +142,17 @@ namespace BiometricDb
                 con.ConnectionString = connectionAddress;
                 con.Open();
 
-                String query = "INSERT INTO EmployeeAccessHistory(EmployeeId, AreaId, Time, AccessType, Date) VALUES(@employeeId, @areaId, @time, @accessType, @date)";
+                String query = "INSERT INTO EmployeeAccessHistory(EmployeeId,EmployeeForename,EmployeeSurname, AreaId,AreaName, TimeOfAccess, AccessType, Date) VALUES(@employeeId, @employeeForename, @employeeSurname, @areaId, @areaName, @time, @accessType, @date)";
                
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                   
                     cmd.Parameters.AddWithValue("@employeeId", textBox2.Text);
+                    cmd.Parameters.AddWithValue("@employeeForename", textBox1.Text);
+                    cmd.Parameters.AddWithValue("@employeeSurname", textBox3.Text);
                     cmd.Parameters.AddWithValue("@areaId", locationId);
+                    cmd.Parameters.AddWithValue("@areaName", this.comboBox1.GetItemText(this.comboBox1.SelectedItem));
 
                     if (comboBox2.SelectedItem == "Enter")
                     {
@@ -159,10 +162,9 @@ namespace BiometricDb
                     {
                     cmd.Parameters.AddWithValue("@accessType", "Exit");
                     }
-                  
 
-                    cmd.Parameters.AddWithValue("time", DateTime.Now.ToString("HH:mm:ss"));
-                    cmd.Parameters.AddWithValue("@date", DateTime.Now.Date);
+                    cmd.Parameters.AddWithValue("@time", DateTime.Now.TimeOfDay);
+                    cmd.Parameters.AddWithValue("@date", DateTime.Now.Date.Date);
 
                     // execute the insert statement and store the result
                     cmd.ExecuteNonQuery();
