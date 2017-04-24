@@ -162,9 +162,11 @@ namespace BiometricDb
                     {
                     cmd.Parameters.AddWithValue("@accessType", "Exit");
                     }
-
-                    cmd.Parameters.AddWithValue("@time", DateTime.Now.TimeOfDay);
-                    cmd.Parameters.AddWithValue("@date", DateTime.Now.Date.Date);
+                    string currentTime = DateTime.Now.ToString("HH:mm");
+                    string currentDate = DateTime.Now.ToString("dd/MM/yyyy");
+                    cmd.Parameters.AddWithValue("@time",  DateTime.Parse(currentTime));
+                   
+                    cmd.Parameters.AddWithValue("@date", currentDate);
 
                     // execute the insert statement and store the result
                     cmd.ExecuteNonQuery();
