@@ -14,12 +14,39 @@ namespace BiometricDb
 {
     public partial class LocationMaintenance : Form
     {
-
-        Bitmap finalImg;
+        int accessLevel, locationId;
         System.Data.SqlClient.SqlConnection con;
+        //String connectionAddress = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
+        String connectionAddress = "Data Source=jdickinson03.public.cs.qub.ac.uk;Initial Catalog=jdickinson03;User ID=jdickinson03;Password=5rmp7b1x2hzsv42f";
         public LocationMaintenance()
         {
             InitializeComponent();
+            con = new System.Data.SqlClient.SqlConnection();
+            con.ConnectionString = connectionAddress;
+            con.Open();
+
+            using (var cmd = new SqlCommand("Select * from Locations", con))
+            {
+
+                SqlDataAdapter daLocation = new SqlDataAdapter(cmd);
+                DataSet dsLocationSearch = new DataSet("LocationSearch");
+                daLocation.MissingSchemaAction = MissingSchemaAction.AddWithKey;
+                daLocation.Fill(dsLocationSearch, "Locations");
+
+                DataTable tblLocationDetails;
+                tblLocationDetails = dsLocationSearch.Tables["Locations"];
+
+                foreach (DataRow drCurrent in tblLocationDetails.Rows)
+                {
+                    String locationName = drCurrent["LocationName"].ToString();
+                    String locationAccessLevel = drCurrent["AccessLevel"].ToString();
+
+                    comboBox2.Items.Add((locationName));
+                    comboBox2.ValueMember = locationAccessLevel;
+                    comboBox2.DisplayMember = locationName;
+
+                }
+            }
         }
 
         private void buttonNew_Click(object sender, EventArgs e)
@@ -37,13 +64,13 @@ namespace BiometricDb
         {
     
             con = new System.Data.SqlClient.SqlConnection();
-            con.ConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
+            con.ConnectionString = connectionAddress;
             con.Open();
 
 
             using (var cmd = new SqlCommand("Select * from Locations where Id = @id", con))
             {
-                cmd.Parameters.AddWithValue("@id", s);
+                cmd.Parameters.AddWithValue("@id", locationId);
 
                 SqlDataAdapter daLocation = new SqlDataAdapter(cmd);
                 DataSet dsLocationSearch = new DataSet("LocationSearch");
@@ -99,6 +126,7 @@ namespace BiometricDb
             textBox10.Enabled = true;
             textBox1.Text = "";
             comboBox1.Text = "";
+            comboBox1.Text = "";
             buttonSave.Enabled = false;  
             buttonSearch.Enabled = true;
 
@@ -107,10 +135,7 @@ namespace BiometricDb
         private void buttonSave_Click(object sender, EventArgs e)
         {
             con = new System.Data.SqlClient.SqlConnection();
-
-            con.ConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
-
-
+            con.ConnectionString = connectionAddress;
             string query;
             if (textBox10.Text != "")
             {
@@ -166,7 +191,35 @@ namespace BiometricDb
 
         }
 
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            // this code collects the area Id of the selected search for later use
+             using (var cmd = new SqlCommand("Select * from Locations WHERE LocationName = @locationName", con))
+            {
+
+                cmd.Parameters.AddWithValue("@locationName", this.comboBox2.GetItemText(this.comboBox2.SelectedItem));
+                SqlDataAdapter daLocation = new SqlDataAdapter(cmd);
+                DataSet dsLocationSearch = new DataSet("LocationSearch");
+                daLocation.MissingSchemaAction = MissingSchemaAction.AddWithKey;
+                daLocation.Fill(dsLocationSearch, "Locations");
+
+                DataTable tblLocationDetails;
+                tblLocationDetails = dsLocationSearch.Tables["Locations"];
+
+                foreach (DataRow drCurrent in tblLocationDetails.Rows)
+                {
+                    String locationIdgrab = drCurrent["Id"].ToString();
+                    locationId = Int32.Parse(locationIdgrab);
+                    String accessLevelgrab = drCurrent["AccessLevel"].ToString();
+                    accessLevel = Int32.Parse(accessLevelgrab);
+                }
+            }
+        
+        }
+        }
+
        
 
     }
-}
+
