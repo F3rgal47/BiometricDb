@@ -96,7 +96,12 @@ namespace BiometricDb
         {
                 string commandString;
 
-                if (textBox1.Text != "" && textBox2.Text == "")
+                if (textBox10.Text != "" && textBox2.Text == "" && textBox1.Text == "")
+                {
+                    commandString = "SELECT * FROM EmployeeDetails WHERE Id = @id";
+                    return commandString;
+                }
+                else if (textBox1.Text != "" && textBox2.Text == "")
                 {
                   commandString = "SELECT * FROM EmployeeDetails WHERE Id = @id OR Forename like '" + textBox1.Text + "%' ";
                   return commandString;

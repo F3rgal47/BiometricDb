@@ -20,9 +20,9 @@ namespace BiometricDb
         //String connectionAddress = "Data Source=jdickinson03.public.cs.qub.ac.uk;Initial Catalog=jdickinson03;User ID=jdickinson03;Password=5rmp7b1x2hzsv42f";
         String connectionAddress = "server=jdickinson03.students.cs.qub.ac.uk;user id=jdickinson03;pwd=pbx0c2qm8z5q733n;database=jdickinson03;persistsecurityinfo=True";
         //System.Data.SqlClient.SqlConnection con;
-        MySqlConnection conn = new MySqlConnection("server=jdickinson03.students.cs.qub.ac.uk;user id=jdickinson03;pwd=pbx0c2qm8z5q733n;database=jdickinson03;persistsecurityinfo=True");           
-       
-        int accessLevel, locationId;
+        MySqlConnection conn = new MySqlConnection("server=jdickinson03.students.cs.qub.ac.uk;user id=jdickinson03;pwd=pbx0c2qm8z5q733n;database=jdickinson03;persistsecurityinfo=True");
+
+        int accessLevel, locationId, areaId;
 
 
         public ActivityReport()
@@ -57,22 +57,23 @@ namespace BiometricDb
                     comboBox1.ValueMember = locationAccessLevel;
                     comboBox1.DisplayMember = locationName;
 
-                    //setting up date/time pickers
-                    dateTimePicker1.Value = DateTime.Today;
-                    dateTimePicker2.Value = DateTime.Now.AddHours(-1);
-                    dateTimePicker2.MaxDate = DateTime.Parse("23:59:59");
-                    if (dateTimePicker2.Value >= DateTime.Parse("22:59:59"))
-                    {
-                        // setting the date/time picker to 1 min before minight otherwise system crashes
-                        dateTimePicker3.Value = DateTime.Parse("23:59:59");
-                    }
-                    else
-                    {
-                        dateTimePicker3.Value = DateTime.Now.AddHours(+1);
-                    }
-                    dateTimePicker3.MaxDate = DateTime.Parse("23:59:59");
-
                 }
+
+                //setting up date/time pickers
+                dateTimePicker1.Value = DateTime.Today;
+                dateTimePicker2.Value = DateTime.Now.AddHours(-1);
+                dateTimePicker2.MaxDate = DateTime.Parse("23:59:59");
+                if (dateTimePicker2.Value >= DateTime.Parse("22:59:59"))
+                {
+                    // setting the date/time picker to 1 min before minight otherwise system crashes
+                    dateTimePicker3.Value = DateTime.Parse("23:59:59");
+                }
+                else
+                {
+                    dateTimePicker3.Value = DateTime.Now.AddHours(+1);
+                }
+                dateTimePicker3.MaxDate = DateTime.Parse("23:59:59");
+
             }
         }
 
@@ -85,6 +86,7 @@ namespace BiometricDb
         {
             if (checkBox2.Checked == true)
             {
+                button2.Enabled = false;
                 checkBox1.Checked = false;
                 comboBox1.Enabled = true;
                 textBox10.Enabled = false;
@@ -150,7 +152,7 @@ namespace BiometricDb
                         dataGridView1.Rows[r].Cells[4].Value = dsLocationSearch.Tables["Locations"].Rows[r].ItemArray[4];
                         dataGridView1.Rows[r].Cells[5].Value = dsLocationSearch.Tables["Locations"].Rows[r].ItemArray[5];
                         dataGridView1.Rows[r].Cells[6].Value = dsLocationSearch.Tables["Locations"].Rows[r].ItemArray[6];
-
+                        dataGridView1.Rows[r].Cells[7].Value = dsLocationSearch.Tables["Locations"].Rows[r].ItemArray[7];
 
                     }
 
@@ -161,12 +163,13 @@ namespace BiometricDb
 
             else if (checkBox2.Checked == true) // If searching by Location
             {
-                using (var cmd = new MySqlCommand("Select EmployeeID, EmployeeForename, EmployeeSurname, AreaName, AccessType, TimeOfAccess, Date from EmployeeAccessHistory WHERE Date like '" + dateTimePicker1.Value.ToShortDateString() + "%' and TimeOfAccess >= @timeFrom and TimeOfAccess <= @timeTo  ", conn))
+                using (var cmd = new MySqlCommand("Select EmployeeID, EmployeeForename, EmployeeSurname, LocationName, AreaName, AccessType, TimeOfAccess, Date from EmployeeAccessHistory WHERE LocationId = @locationId AND AreaId = @areaId And Date like '" + dateTimePicker1.Value.ToShortDateString() + "%' and TimeOfAccess >= @timeFrom and TimeOfAccess <= @timeTo  ", conn))
                 {
                     string timeFrom = dateTimePicker2.Value.ToString("HH:mm:ss");
                     string timeTo = dateTimePicker3.Value.ToString("HH:mm:ss");
 
-                    cmd.Parameters.AddWithValue("@areaId", locationId);
+                    cmd.Parameters.AddWithValue("@areaId", areaId);
+                    cmd.Parameters.AddWithValue("@locationId", locationId);
                     cmd.Parameters.AddWithValue("@timeFrom", timeFrom);
                     cmd.Parameters.AddWithValue("@timeTo", timeTo);
 
@@ -193,7 +196,7 @@ namespace BiometricDb
                         string time = dsLocationSearch.Tables["LocationsActivity"].Rows[r].ItemArray[5].ToString();
                         dataGridView1.Rows[r].Cells[5].Value = time;
                         dataGridView1.Rows[r].Cells[6].Value = dsLocationSearch.Tables["LocationsActivity"].Rows[r].ItemArray[6];
-
+                        dataGridView1.Rows[r].Cells[7].Value = dsLocationSearch.Tables["LocationsActivity"].Rows[r].ItemArray[7];
 
                     }
                     button4.Enabled = true;
@@ -216,17 +219,17 @@ namespace BiometricDb
 
             if (textBox1.Text != "" && textBox2.Text == "")
             {
-                commandString = "Select EmployeeID, EmployeeForename, EmployeeSurname, AreaName, AccessType, TimeOfAccess, Date from EmployeeAccessHistory WHERE EmployeeId = @employeeid OR EmployeeForename like '" + textBox1.Text + "%' and Date like '" + dateTimePicker1.Value.ToShortDateString() + "%' and TimeOfAccess >= @timeFrom and TimeOfAccess <= @timeTo ";
+                commandString = "Select EmployeeID, EmployeeForename, EmployeeSurname,LocationName, AreaName, AccessType, TimeOfAccess, Date from EmployeeAccessHistory WHERE EmployeeId = @employeeid OR EmployeeForename like '" + textBox1.Text + "%' and Date like '" + dateTimePicker1.Value.ToShortDateString() + "%' and TimeOfAccess >= @timeFrom and TimeOfAccess <= @timeTo ";
                 return commandString;
             }
             else if (textBox1.Text == "" && textBox2.Text != "")
             {
-                commandString = "Select EmployeeID, EmployeeForename, EmployeeSurname, AreaName, AccessType, TimeOfAccess, Date from EmployeeAccessHistory WHERE EmployeeId = @employeeid OR EmployeeSurname like '" + textBox2.Text + "%' and Date like '" + dateTimePicker1.Value.ToShortDateString() + "%' and TimeOfAccess >= @timeFrom and TimeOfAccess <= @timeTo ";
+                commandString = "Select EmployeeID, EmployeeForename, EmployeeSurname,LocationName, AreaName, AccessType, TimeOfAccess, Date from EmployeeAccessHistory WHERE EmployeeId = @employeeid OR EmployeeSurname like '" + textBox2.Text + "%' and Date like '" + dateTimePicker1.Value.ToShortDateString() + "%' and TimeOfAccess >= @timeFrom and TimeOfAccess <= @timeTo ";
                 return commandString;
             }
             else
             {
-                commandString = "Select EmployeeID, EmployeeForename, EmployeeSurname, AreaName, AccessType, TimeOfAccess, Date from EmployeeAccessHistory WHERE EmployeeId = @employeeid OR EmployeeForename like '" + textBox1.Text + "%' AND EmployeeSurname like '" + textBox2.Text + "%' and Date like '" + dateTimePicker1.Value.ToShortDateString() + "%' and TimeOfAccess >= @timeFrom and TimeOfAccess <= @timeTo ";
+                commandString = "Select EmployeeID, EmployeeForename, EmployeeSurname,LocationName, AreaName, AccessType, TimeOfAccess, Date from EmployeeAccessHistory WHERE EmployeeId = @employeeid OR EmployeeForename like '" + textBox1.Text + "%' AND EmployeeSurname like '" + textBox2.Text + "%' and Date like '" + dateTimePicker1.Value.ToShortDateString() + "%' and TimeOfAccess >= @timeFrom and TimeOfAccess <= @timeTo ";
                 return commandString;
             }
 
@@ -252,8 +255,36 @@ namespace BiometricDb
                     locationId = Int32.Parse(locationIdgrab);
                     String accessLevelgrab = drCurrent["AccessLevel"].ToString();
                     accessLevel = Int32.Parse(accessLevelgrab);
+                    comboBox3.Enabled = true;    
                 }
             }
+
+            using (var cmd = new MySqlCommand("Select * from LocationAreas WHERE LocationId = " + locationId, conn)) // populate combobox 3 with areas from selected location
+            {
+
+                MySqlDataAdapter daArea = new MySqlDataAdapter(cmd);
+                DataSet dsArea = new DataSet("AreaSearch");
+                daArea.MissingSchemaAction = MissingSchemaAction.AddWithKey;
+                daArea.Fill(dsArea, "Areas");
+
+                DataTable tblArea;
+                tblArea = dsArea.Tables["Areas"];
+
+                foreach (DataRow drCurrent in tblArea.Rows)
+                {
+                    String areaIdgrab = drCurrent["Id"].ToString();
+                    areaId = Int32.Parse(areaIdgrab);
+                    String AreaName = drCurrent["AreaName"].ToString();
+                    String locationAccessLevel = drCurrent["AccessLevel"].ToString();
+
+                    comboBox3.Items.Add((AreaName));
+                    comboBox3.ValueMember = locationAccessLevel;
+                    comboBox3.DisplayMember = AreaName;
+                   
+
+                }
+            }
+
         }
 
 
@@ -296,8 +327,8 @@ namespace BiometricDb
             // storing header part in Excel
             for (int i = 2; i < dataGridView1.Columns.Count + 2; i++)
             {
-                worksheet.get_Range("A1", "H3").Font.Size = 12;
-                worksheet.get_Range("A1", "H3").Font.Bold = true;
+                worksheet.get_Range("A1", "I3").Font.Size = 12;
+                worksheet.get_Range("A1", "I3").Font.Bold = true;
                 worksheet.Cells[3, i] = dataGridView1.Columns[i - 2].HeaderText;
                 worksheet.Rows[3].Columns.Autofit();
             }
@@ -323,6 +354,11 @@ namespace BiometricDb
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close(); // cancel button returns to previous form
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            button2.Enabled = true;
         }
 
 

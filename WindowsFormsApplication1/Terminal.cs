@@ -17,7 +17,7 @@ namespace BiometricDb
     public partial class Terminal : Form
     {
         int EmployeeAccesLevel;
-        int accessLevel, locationId;
+        int accessLevel, locationId, areaId;
         //String connectionAddress = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
         //String connectionAddress = "Data Source=jdickinson03.public.cs.qub.ac.uk;Initial Catalog=jdickinson03;User ID=jdickinson03;Password=5rmp7b1x2hzsv42f";
         //System.Data.SqlClient.SqlConnection con;
@@ -28,6 +28,7 @@ namespace BiometricDb
         public Terminal()
         {
             InitializeComponent();
+           
             conn = new MySql.Data.MySqlClient.MySqlConnection();
             conn.ConnectionString = connectionAddress;
             conn.Open();
@@ -63,10 +64,7 @@ namespace BiometricDb
 
         public void search()
         {
-            //if (textBox10.Text = ){
-            //    MessageBox.Show("Please Enter Employee Id");
-            //} 
-            //else{
+  
             conn = new MySql.Data.MySqlClient.MySqlConnection();
             conn.ConnectionString = connectionAddress;
             conn.Open();
@@ -93,25 +91,26 @@ namespace BiometricDb
                     textBox4.Text = drCurrent["AccessLevel"].ToString();
                     EmployeeAccesLevel = Int32.Parse(textBox4.Text);
 
+                    if (drCurrent["Photo"].ToString() != "")
+                    {
+                        //BLOB is read into Byte array, then used to construct MemoryStream, then passed to PictureBox.
+                        Byte[] byteBLOBData = new Byte[0];
 
-                    //if (drCurrent["Photo"].ToString() != "")
-                    //{
-                    //    var data = (Byte[])(drCurrent["Photo"]);
+                        byteBLOBData = (Byte[])(drCurrent["Photo"]);
 
-                    //    using (MemoryStream ms = new MemoryStream(data.FrontImage))
-                    //    {
-                    //        img = Image.FromStream(ms);
-                    //        pictureBox1.Image = img;
-                    //    }
-                    //        //Image newImage;
-                    //        //MemoryStream ms = new MemoryStream(data);
+                        MemoryStream stmBLOBData = new MemoryStream(byteBLOBData);
+                        pictureBox1.Image = Image.FromStream(stmBLOBData);
 
-                    //        ////Set image variable value using memory stream.
-                    //        //newImage = Image.FromStream(ms);
-                    //        ////set picture
+                        //create a new Bitmap with the proper dimensions
+                        Bitmap finalImg;
+                        finalImg = new Bitmap(pictureBox1.Image, pictureBox1.Width, pictureBox1.Height);
 
+                        //center the new image
+                        pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
 
-                    //}
+                        //set the new image
+                        pictureBox1.Image = finalImg;
+                    }
 
                 }
 
@@ -149,7 +148,7 @@ namespace BiometricDb
                 conn.ConnectionString = connectionAddress;
                 conn.Open();
 
-                String query = "INSERT INTO EmployeeAccessHistory(EmployeeId,EmployeeForename,EmployeeSurname, AreaId,AreaName, TimeOfAccess, AccessType, Date) VALUES(@employeeId, @employeeForename, @employeeSurname, @areaId, @areaName, @time, @accessType, @date)";
+                String query = "INSERT INTO EmployeeAccessHistory(EmployeeId,EmployeeForename,EmployeeSurname, AreaId,AreaName, TimeOfAccess, AccessType, Date, LocationId, LocationName) VALUES(@employeeId, @employeeForename, @employeeSurname, @areaId, @areaName, @time, @accessType, @date, @locationId, @locationName)";
                
 
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
@@ -158,8 +157,10 @@ namespace BiometricDb
                     cmd.Parameters.AddWithValue("@employeeId", textBox2.Text);
                     cmd.Parameters.AddWithValue("@employeeForename", textBox1.Text);
                     cmd.Parameters.AddWithValue("@employeeSurname", textBox3.Text);
-                    cmd.Parameters.AddWithValue("@areaId", locationId);
-                    cmd.Parameters.AddWithValue("@areaName", this.comboBox1.GetItemText(this.comboBox1.SelectedItem));
+                    cmd.Parameters.AddWithValue("@areaId", areaId);
+                    cmd.Parameters.AddWithValue("@areaName", this.comboBox3.GetItemText(this.comboBox3.SelectedItem));
+                    cmd.Parameters.AddWithValue("@locationId", locationId);
+                    cmd.Parameters.AddWithValue("@locationName", this.comboBox1.GetItemText(this.comboBox1.SelectedItem));
 
                     if (comboBox2.SelectedItem == "Enter")
                     {
@@ -190,14 +191,17 @@ namespace BiometricDb
             textBox4.Text = "";
             textBox5.Text = "";
             textBox5.BackColor = Color.White;
-            textBox10.Enabled = true;
+            textBox10.Enabled = false;
             textBox1.Enabled = false;
             textBox2.Enabled = false;
             textBox3.Enabled = false;
             textBox4.Enabled = false;
             textBox5.Enabled = false;
             pictureBox1.Image = null;
-            buttonGo.Enabled = true;
+            buttonGo.Enabled = false;
+            comboBox2.Text = "";
+            
+            
 
 
 
@@ -205,7 +209,8 @@ namespace BiometricDb
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
+            // this code collects the Location Id of the selected search for later use
             using (var cmd = new MySqlCommand("Select * from Locations WHERE LocationName = @locationName", conn))
             {
 
@@ -220,22 +225,78 @@ namespace BiometricDb
 
                 foreach (DataRow drCurrent in tblLocationDetails.Rows)
                 {
-                     String locationIdgrab = drCurrent["Id"].ToString();
-                     locationId = Int32.Parse(locationIdgrab);
-                     String accessLevelgrab = drCurrent["AccessLevel"].ToString();
-                     accessLevel = Int32.Parse(accessLevelgrab);
+                    String locationIdgrab = drCurrent["Id"].ToString();
+                    locationId = Int32.Parse(locationIdgrab);
+                    String accessLevelgrab = drCurrent["AccessLevel"].ToString();
+                    accessLevel = Int32.Parse(accessLevelgrab);
+                    comboBox3.Enabled = true;                
+                }
+            }
+
+            using (var cmd = new MySqlCommand("Select * from LocationAreas WHERE LocationId = " + locationId, conn)) // populate combobox 3 with areas from selected location
+            {
+
+                MySqlDataAdapter daArea = new MySqlDataAdapter(cmd);
+                DataSet dsArea = new DataSet("AreaSearch");
+                daArea.MissingSchemaAction = MissingSchemaAction.AddWithKey;
+                daArea.Fill(dsArea, "Areas");
+
+                DataTable tblArea;
+                tblArea = dsArea.Tables["Areas"];
+
+                foreach (DataRow drCurrent in tblArea.Rows)
+                {
+                    String AreaName = drCurrent["AreaName"].ToString();
+                    String locationAccessLevel = drCurrent["AccessLevel"].ToString();
+
+                    comboBox3.Items.Add((AreaName));
+                    comboBox3.ValueMember = locationAccessLevel;
+                    comboBox3.DisplayMember = AreaName;
+
                 }
             }
             String accessMessage = "This Area Requires an Access Level of " + accessLevel;
             label7.Text = accessMessage;
-            textBox10.Enabled = true;
-            buttonGo.Enabled = true;
+           
         }
 
         private void panel2_Paint(object sender, PaintEventArgs e)
         {
 
-        }                                
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            using (var cmd = new MySqlCommand("Select * from LocationAreas WHERE AreaName = @areaName", conn)) // grab Area Id
+            {
+
+                cmd.Parameters.AddWithValue("@areaName", this.comboBox3.GetItemText(this.comboBox3.SelectedItem));
+
+                MySqlDataAdapter daArea = new MySqlDataAdapter(cmd);
+                DataSet dsArea = new DataSet("AreaSearch");
+                daArea.MissingSchemaAction = MissingSchemaAction.AddWithKey;
+                daArea.Fill(dsArea, "Areas");
+
+                DataTable tblArea;
+                tblArea = dsArea.Tables["Areas"];
+
+                foreach (DataRow drCurrent in tblArea.Rows)
+                {
+                    String areaIdgrab = drCurrent["Id"].ToString();
+                    areaId = Int32.Parse(areaIdgrab);
+                }
+            }
+            
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox2.Text != "")
+            {
+                textBox10.Enabled = true;
+                buttonGo.Enabled = true;
+            }
+        }                           
         
     }
 }

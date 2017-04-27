@@ -66,8 +66,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBox13 = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -93,7 +95,7 @@
             // pictureBox1
             // 
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox1.Location = new System.Drawing.Point(17, 72);
+            this.pictureBox1.Location = new System.Drawing.Point(6, 5);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(152, 188);
             this.pictureBox1.TabIndex = 3;
@@ -105,7 +107,7 @@
             this.buttonBrowsePhoto.Enabled = false;
             this.buttonBrowsePhoto.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonBrowsePhoto.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.buttonBrowsePhoto.Location = new System.Drawing.Point(17, 266);
+            this.buttonBrowsePhoto.Location = new System.Drawing.Point(17, 284);
             this.buttonBrowsePhoto.Name = "buttonBrowsePhoto";
             this.buttonBrowsePhoto.Size = new System.Drawing.Size(103, 34);
             this.buttonBrowsePhoto.TabIndex = 4;
@@ -439,12 +441,22 @@
             this.label15.TabIndex = 39;
             this.label15.Text = "Confirm Password";
             // 
+            // panel2
+            // 
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel2.Controls.Add(this.pictureBox1);
+            this.panel2.Location = new System.Drawing.Point(11, 67);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(167, 199);
+            this.panel2.TabIndex = 40;
+            // 
             // EmployeeMaintenance
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(807, 349);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.textBox13);
             this.Controls.Add(this.label1);
@@ -480,13 +492,13 @@
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.buttonBrowsePhoto);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.panel1);
             this.Name = "EmployeeMaintenance";
             this.Text = "New Employee";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -532,5 +544,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox13;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Panel panel2;
     }
 }

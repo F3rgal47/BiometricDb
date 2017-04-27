@@ -48,10 +48,5 @@ namespace BiometricDb
             AreaMaintenanceForm.ShowDialog();
             this.Visible = true;
         }
-
-        private void LocationAdmin_Load_1(object sender, EventArgs e)
-        {
-
-        }
     }
 }

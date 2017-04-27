@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.IO;
 using MySql.Data;
 using MySql.Data.MySqlClient;
+using System.Configuration;
 
 namespace BiometricDb
 {
@@ -18,6 +19,7 @@ namespace BiometricDb
     {
 
         Bitmap finalImg;
+        string filepath;
         //System.Data.SqlClient.SqlConnection con;
         ////String connectionAddress = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
         //String connectionAddress = "Data Source=jdickinson03.public.cs.qub.ac.uk;Initial Catalog=jdickinson03;User ID=jdickinson03;Password=5rmp7b1x2hzsv42f";
@@ -48,7 +50,7 @@ namespace BiometricDb
             if (open.ShowDialog() == DialogResult.OK)
             {
                 // Load local image to PictureBox control
-
+                filepath = open.FileName;
                 pictureBox1.Load(open.FileName);
 
                 //create a new Bitmap with the proper dimensions
@@ -126,22 +128,23 @@ namespace BiometricDb
 
             else
             {
-            ////convert picture into byte to store to db
-            //System.IO.MemoryStream defaultImageStream = new System.IO.MemoryStream();
-            //Bitmap NewImage = new Bitmap(finalImg, new Size(720, 227));
-            //Image b = (Image)NewImage;
-            //b.Save(defaultImageStream, System.Drawing.Imaging.ImageFormat.Bmp);
-            //byte[] defaultImageData = new byte[defaultImageStream.Length];           
+
+                //converts picturebox image into blob data for storage on the db
+                FileStream fsBLOBFile = new FileStream(filepath, FileMode.Open, FileAccess.Read);
+                Byte[] bytBLOBData = new Byte[fsBLOBFile.Length];
+                fsBLOBFile.Read(bytBLOBData, 0, bytBLOBData.Length);
+                fsBLOBFile.Close();
+
                 string query;
                 if (textBox10.Text != "")
                 {
-                    query = "UPDATE EmployeeDetails SET Forename=@forename, Surname=@surname, Email=@email, TelephoneNo=@phoneNo, AccessLevel=@accessLevel,BiometricMarker=@bioMarker, AddressLine1=@addressLine1, AddressLine2=@addressLine2, AddressLine3= @addressLine3, City=@city, Postcode=@postcode, Password=@password WHERE Id =" + textBox10.Text;
+                    query = "UPDATE EmployeeDetails SET Forename=@forename, Surname=@surname, Email=@email, TelephoneNo=@phoneNo, AccessLevel=@accessLevel,BiometricMarker=@bioMarker, AddressLine1=@addressLine1, AddressLine2=@addressLine2, AddressLine3= @addressLine3, City=@city, Postcode=@postcode,Photo=@photo, Password=@password  WHERE Id =" + textBox10.Text;
                     //, Photo=@photo
                     //BiometricMarker=@bioMarker,
                 }
                 else
                 {
-                    query = "INSERT INTO EmployeeDetails(Forename, Surname, Email, TelephoneNo, BiometricMarker, AccessLevel, AddressLine1, AddressLine2, AddressLine3, City, Postcode, Password) VALUES(@forename, @surname, @email, @phoneNo, @bioMarker, @accessLevel, @addressLine1, @addressLine2, @addressLine3, @city, @postcode,@password)";
+                    query = "INSERT INTO EmployeeDetails(Forename, Surname, Email, TelephoneNo, BiometricMarker, AccessLevel, AddressLine1, AddressLine2, AddressLine3, City, Postcode, Password, Photo) VALUES(@forename, @surname, @email, @phoneNo, @bioMarker, @accessLevel, @addressLine1, @addressLine2, @addressLine3, @city, @postcode, @photo,@password)";
                     //, @photo , Photo
                     //BiometricMarker, @bioMarker,
                 }
@@ -177,7 +180,7 @@ namespace BiometricDb
                     cmd.Parameters.AddWithValue("@city", textBox8.Text);
                     cmd.Parameters.AddWithValue("@postcode", textBox9.Text);
                     cmd.Parameters.AddWithValue("@password", textBox13.Text);
-                    //cmd.Parameters.AddWithValue("@photo", defaultImageData);
+                    cmd.Parameters.AddWithValue("@photo", bytBLOBData);
                     // execute the insert statement and store the result
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("Successfully Added");
@@ -187,6 +190,7 @@ namespace BiometricDb
                 }
             }
         }
+
 
         private void button_New_Click(object sender, EventArgs e)
         {
@@ -298,27 +302,31 @@ namespace BiometricDb
                         textBox7.Text = drCurrent["AddressLine3"].ToString();
                         textBox8.Text = drCurrent["City"].ToString();
                         textBox9.Text = drCurrent["Postcode"].ToString();
+
+                        if (drCurrent["Photo"].ToString() != "")
+                        {
+                            //BLOB is read into Byte array, then used to construct MemoryStream, then passed to PictureBox.
+                            Byte[] byteBLOBData = new Byte[0];
+
+                            byteBLOBData = (Byte[])(drCurrent["Photo"]);
+
+                            MemoryStream stmBLOBData = new MemoryStream(byteBLOBData);
+                            pictureBox1.Image = Image.FromStream(stmBLOBData);
+
+                            //create a new Bitmap with the proper dimensions
+
+                            finalImg = new Bitmap(pictureBox1.Image, pictureBox1.Width, pictureBox1.Height);
+
+                            //center the new image
+                            pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
+
+                            //set the new image
+                            pictureBox1.Image = finalImg;
+
+                        }
+
                         textBox12.Text = drCurrent["Password"].ToString();
-                        textBox13.Text = drCurrent["Password"].ToString();
-                        //if (drCurrent["Photo"].ToString() != "")
-                        //{
-                        //    var data = (Byte[])(drCurrent["Photo"]);
-
-                        //    using (MemoryStream ms = new MemoryStream(data.FrontImage))
-                        //    {
-                        //        img = Image.FromStream(ms);
-                        //        pictureBox1.Image = img;
-                        //    }
-                        //        //Image newImage;
-                        //        //MemoryStream ms = new MemoryStream(data);
-
-                        //        ////Set image variable value using memory stream.
-                        //        //newImage = Image.FromStream(ms);
-                        //        ////set picture
-
-
-                        //}
-
+                        textBox13.Text = drCurrent["Password"].ToString();                       
 
                     }
                     textBox1.Enabled = true;
