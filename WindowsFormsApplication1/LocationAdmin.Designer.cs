@@ -134,6 +134,7 @@
             this.Controls.Add(this.panel1);
             this.Name = "LocationAdmin";
             this.Text = "Employee Admin";
+            this.Load += new System.EventHandler(this.LocationAdmin_Load_1);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
