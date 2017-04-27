@@ -9,26 +9,32 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using MySql.Data;
+using MySql.Data.MySqlClient;
 
 namespace BiometricDb
 {
     public partial class LocationMaintenance : Form
     {
         int accessLevel, locationId;
-        System.Data.SqlClient.SqlConnection con;
-        //String connectionAddress = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
-        String connectionAddress = "Data Source=jdickinson03.public.cs.qub.ac.uk;Initial Catalog=jdickinson03;User ID=jdickinson03;Password=5rmp7b1x2hzsv42f";
+        //System.Data.SqlClient.SqlConnection con;
+        ////String connectionAddress = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
+        //String connectionAddress = "Data Source=jdickinson03.public.cs.qub.ac.uk;Initial Catalog=jdickinson03;User ID=jdickinson03;Password=5rmp7b1x2hzsv42f";
+
+        String connectionAddress = "server=jdickinson03.students.cs.qub.ac.uk;user id=jdickinson03;pwd=pbx0c2qm8z5q733n;database=jdickinson03;persistsecurityinfo=True";
+
+        MySqlConnection conn = new MySqlConnection();
         public LocationMaintenance()
         {
             InitializeComponent();
-            con = new System.Data.SqlClient.SqlConnection();
-            con.ConnectionString = connectionAddress;
-            con.Open();
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
+            conn.ConnectionString = connectionAddress;
+            conn.Open();
 
-            using (var cmd = new SqlCommand("Select * from Locations", con))
+            using (var cmd = new MySqlCommand("Select * from Locations", conn))
             {
 
-                SqlDataAdapter daLocation = new SqlDataAdapter(cmd);
+                MySqlDataAdapter daLocation = new MySqlDataAdapter(cmd);
                 DataSet dsLocationSearch = new DataSet("LocationSearch");
                 daLocation.MissingSchemaAction = MissingSchemaAction.AddWithKey;
                 daLocation.Fill(dsLocationSearch, "Locations");
@@ -62,17 +68,17 @@ namespace BiometricDb
 
         public void search(string s)
         {
-    
-            con = new System.Data.SqlClient.SqlConnection();
-            con.ConnectionString = connectionAddress;
-            con.Open();
+
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
+            conn.ConnectionString = connectionAddress;
+            conn.Open();
 
 
-            using (var cmd = new SqlCommand("Select * from Locations where Id = @id", con))
+            using (var cmd = new MySqlCommand("Select * from Locations where Id = @id", conn))
             {
                 cmd.Parameters.AddWithValue("@id", locationId);
 
-                SqlDataAdapter daLocation = new SqlDataAdapter(cmd);
+                MySqlDataAdapter daLocation = new MySqlDataAdapter(cmd);
                 DataSet dsLocationSearch = new DataSet("LocationSearch");
                 daLocation.MissingSchemaAction = MissingSchemaAction.AddWithKey;
                 daLocation.Fill(dsLocationSearch, "Locations");
@@ -102,7 +108,7 @@ namespace BiometricDb
         private void buttonDelete_Click_1(object sender, EventArgs e)
         {
             string query = "DELETE FROM Locations WHERE Id = @id";
-            SqlCommand cmd1 = new SqlCommand(query, con);
+            MySqlCommand cmd1 = new MySqlCommand(query, conn);
             cmd1.Parameters.AddWithValue("@id", textBox10.Text);
 
             int result = cmd1.ExecuteNonQuery();
@@ -123,10 +129,12 @@ namespace BiometricDb
         {
 
             textBox10.Text = "";
-            textBox10.Enabled = true;
+            textBox10.Enabled = false;
+            textBox1.Enabled = false;
+            comboBox1.Enabled = false;
             textBox1.Text = "";
             comboBox1.Text = "";
-            comboBox1.Text = "";
+            comboBox2.Text = "";
             buttonSave.Enabled = false;  
             buttonSearch.Enabled = true;
 
@@ -134,8 +142,9 @@ namespace BiometricDb
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            con = new System.Data.SqlClient.SqlConnection();
-            con.ConnectionString = connectionAddress;
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
+            conn.ConnectionString = connectionAddress;
+            conn.Open();
             string query;
             if (textBox10.Text != "")
             {
@@ -147,7 +156,7 @@ namespace BiometricDb
                 query = "INSERT INTO Locations(LocationName, AccessLevel) VALUES(@locationName,@accessLevel)";
 
             }
-            using (SqlCommand cmd = new SqlCommand(query, con))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
             {
 
                 int accessLevel = 1;
@@ -164,12 +173,11 @@ namespace BiometricDb
                     accessLevel = 3;
                 }
 
-                con.Open();
                 cmd.Parameters.AddWithValue("@locationName", textBox1.Text);
                 cmd.Parameters.AddWithValue("@accessLevel", accessLevel);
                 cmd.ExecuteNonQuery();
                 MessageBox.Show("Successfully Added");
-                con.Close();
+                conn.Close();
                 cleanup();
 
 
@@ -195,11 +203,11 @@ namespace BiometricDb
         {
 
             // this code collects the area Id of the selected search for later use
-             using (var cmd = new SqlCommand("Select * from Locations WHERE LocationName = @locationName", con))
+             using (var cmd = new MySqlCommand("Select * from Locations WHERE LocationName = @locationName", conn))
             {
 
                 cmd.Parameters.AddWithValue("@locationName", this.comboBox2.GetItemText(this.comboBox2.SelectedItem));
-                SqlDataAdapter daLocation = new SqlDataAdapter(cmd);
+                MySqlDataAdapter daLocation = new MySqlDataAdapter(cmd);
                 DataSet dsLocationSearch = new DataSet("LocationSearch");
                 daLocation.MissingSchemaAction = MissingSchemaAction.AddWithKey;
                 daLocation.Fill(dsLocationSearch, "Locations");

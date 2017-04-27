@@ -62,6 +62,10 @@
             this.buttonNew = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
             this.buttonSearch = new System.Windows.Forms.Button();
+            this.textBox12 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBox13 = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -326,7 +330,6 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(136, 21);
             this.comboBox1.TabIndex = 29;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label14
             // 
@@ -344,7 +347,6 @@
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(136, 20);
             this.textBox11.TabIndex = 31;
-            this.textBox11.TextChanged += new System.EventHandler(this.textBox11_TextChanged);
             // 
             // buttonFingerReg
             // 
@@ -401,12 +403,52 @@
             this.buttonSearch.UseVisualStyleBackColor = false;
             this.buttonSearch.Click += new System.EventHandler(this.button_Search_Click);
             // 
+            // textBox12
+            // 
+            this.textBox12.Enabled = false;
+            this.textBox12.Location = new System.Drawing.Point(624, 205);
+            this.textBox12.Name = "textBox12";
+            this.textBox12.Size = new System.Drawing.Size(136, 20);
+            this.textBox12.TabIndex = 36;
+            this.textBox12.UseSystemPasswordChar = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(542, 208);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(78, 13);
+            this.label1.TabIndex = 37;
+            this.label1.Text = "App PassWord";
+            // 
+            // textBox13
+            // 
+            this.textBox13.Enabled = false;
+            this.textBox13.Location = new System.Drawing.Point(624, 229);
+            this.textBox13.Name = "textBox13";
+            this.textBox13.Size = new System.Drawing.Size(136, 20);
+            this.textBox13.TabIndex = 38;
+            this.textBox13.UseSystemPasswordChar = true;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(528, 232);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(91, 13);
+            this.label15.TabIndex = 39;
+            this.label15.Text = "Confirm Password";
+            // 
             // EmployeeMaintenance
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(807, 349);
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.textBox13);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.textBox12);
             this.Controls.Add(this.buttonSearch);
             this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.buttonNew);
@@ -442,7 +484,6 @@
             this.Controls.Add(this.panel1);
             this.Name = "EmployeeMaintenance";
             this.Text = "New Employee";
-            this.Load += new System.EventHandler(this.NewEmployee_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -487,5 +528,9 @@
         private System.Windows.Forms.Button buttonNew;
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.Button buttonSearch;
+        private System.Windows.Forms.TextBox textBox12;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBox13;
+        private System.Windows.Forms.Label label15;
     }
 }

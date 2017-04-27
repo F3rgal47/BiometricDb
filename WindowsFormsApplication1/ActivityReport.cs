@@ -9,25 +9,36 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using MySql.Data;
+using MySql.Data.MySqlClient;
 
 namespace BiometricDb
 {
     public partial class ActivityReport : Form
     {
-        String connectionAddress = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
-        System.Data.SqlClient.SqlConnection con;
+        //String connectionAddress = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
+        //String connectionAddress = "Data Source=jdickinson03.public.cs.qub.ac.uk;Initial Catalog=jdickinson03;User ID=jdickinson03;Password=5rmp7b1x2hzsv42f";
+        String connectionAddress = "server=jdickinson03.students.cs.qub.ac.uk;user id=jdickinson03;pwd=pbx0c2qm8z5q733n;database=jdickinson03;persistsecurityinfo=True";
+        //System.Data.SqlClient.SqlConnection con;
+        MySqlConnection conn = new MySqlConnection("server=jdickinson03.students.cs.qub.ac.uk;user id=jdickinson03;pwd=pbx0c2qm8z5q733n;database=jdickinson03;persistsecurityinfo=True");           
+       
         int accessLevel, locationId;
+
+
         public ActivityReport()
         {
             InitializeComponent();
-            con = new System.Data.SqlClient.SqlConnection();
-            con.ConnectionString = connectionAddress;
-            con.Open();
+            //conn = new System.Data.SqlClient.SqlConnection();
+            //conn.ConnectionString = connectionAddress;
+            //conn.Open();
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
+            conn.ConnectionString = connectionAddress;
+            conn.Open();
 
-            using (var cmd = new SqlCommand("Select * from Locations", con))
+            using (var cmd = new MySqlCommand("Select * from Locations", conn))
             {
                 String value, location;
-                SqlDataAdapter daLocation = new SqlDataAdapter(cmd);
+                MySqlDataAdapter daLocation = new MySqlDataAdapter(cmd);
                 DataSet dsLocationSearch = new DataSet("LocationSearch");
                 daLocation.MissingSchemaAction = MissingSchemaAction.AddWithKey;
                 daLocation.Fill(dsLocationSearch, "Locations");
@@ -48,7 +59,7 @@ namespace BiometricDb
 
                     //setting up date/time pickers
                     dateTimePicker1.Value = DateTime.Today;
-                    dateTimePicker2.Value = DateTime.Now;
+                    dateTimePicker2.Value = DateTime.Now.AddHours(-1);
                     dateTimePicker2.MaxDate = DateTime.Parse("23:59:59");
                     if (dateTimePicker2.Value >= DateTime.Parse("22:59:59"))
                     {
@@ -103,7 +114,7 @@ namespace BiometricDb
                 String commandString = createCommand();
 
 
-                using (var cmd = new SqlCommand(commandString, con))
+                using (var cmd = new MySqlCommand(commandString, conn))
                 {
 
 
@@ -118,7 +129,7 @@ namespace BiometricDb
 
 
                     // Fix this nai
-                    SqlDataAdapter daLocation = new SqlDataAdapter(cmd);
+                    MySqlDataAdapter daLocation = new MySqlDataAdapter(cmd);
                     DataSet dsLocationSearch = new DataSet("LocationSearch");
                     daLocation.MissingSchemaAction = MissingSchemaAction.AddWithKey;
                     daLocation.Fill(dsLocationSearch, "Locations");
@@ -150,7 +161,7 @@ namespace BiometricDb
 
             else if (checkBox2.Checked == true) // If searching by Location
             {
-                using (var cmd = new SqlCommand("Select EmployeeID, EmployeeForename, EmployeeSurname, AreaName, AccessType, TimeOfAccess, Date from EmployeeAccessHistory WHERE Date like '" + dateTimePicker1.Value.ToShortDateString() + "%' and TimeOfAccess >= @timeFrom and TimeOfAccess <= @timeTo  ", con))
+                using (var cmd = new MySqlCommand("Select EmployeeID, EmployeeForename, EmployeeSurname, AreaName, AccessType, TimeOfAccess, Date from EmployeeAccessHistory WHERE Date like '" + dateTimePicker1.Value.ToShortDateString() + "%' and TimeOfAccess >= @timeFrom and TimeOfAccess <= @timeTo  ", conn))
                 {
                     string timeFrom = dateTimePicker2.Value.ToString("HH:mm:ss");
                     string timeTo = dateTimePicker3.Value.ToString("HH:mm:ss");
@@ -160,7 +171,7 @@ namespace BiometricDb
                     cmd.Parameters.AddWithValue("@timeTo", timeTo);
 
 
-                    SqlDataAdapter daLocation = new SqlDataAdapter(cmd);
+                    MySqlDataAdapter daLocation = new MySqlDataAdapter(cmd);
                     DataSet dsLocationSearch = new DataSet("LocationSearch");
                     daLocation.MissingSchemaAction = MissingSchemaAction.AddWithKey;
                     daLocation.Fill(dsLocationSearch, "LocationsActivity");
@@ -223,11 +234,11 @@ namespace BiometricDb
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            using (var cmd = new SqlCommand("Select * from Locations WHERE LocationName = @locationName", con))
+            using (var cmd = new MySqlCommand("Select * from Locations WHERE LocationName = @locationName", conn))
             {
 
                 cmd.Parameters.AddWithValue("@locationName", this.comboBox1.GetItemText(this.comboBox1.SelectedItem));
-                SqlDataAdapter daLocation = new SqlDataAdapter(cmd);
+                MySqlDataAdapter daLocation = new MySqlDataAdapter(cmd);
                 DataSet dsLocationSearch = new DataSet("LocationSearch");
                 daLocation.MissingSchemaAction = MissingSchemaAction.AddWithKey;
                 daLocation.Fill(dsLocationSearch, "Locations");

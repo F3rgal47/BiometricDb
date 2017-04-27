@@ -8,13 +8,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data;
+using MySql.Data.MySqlClient;
 
 namespace BiometricDb
 {
     public partial class SearchEmployee : Form
     {
         public static string employeeId;
-        System.Data.SqlClient.SqlConnection con;
+        //String connectionAddress = "Data Source=jdickinson03.public.cs.qub.ac.uk;Initial Catalog=jdickinson03;User ID=jdickinson03;Password=5rmp7b1x2hzsv42f";       
+        ////con.ConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
+        //System.Data.SqlClient.SqlConnection con;
+        String connectionAddress = "server=jdickinson03.students.cs.qub.ac.uk;user id=jdickinson03;pwd=pbx0c2qm8z5q733n;database=jdickinson03;persistsecurityinfo=True";
+
+        MySqlConnection conn = new MySqlConnection();
+
         public SearchEmployee()
         {
             InitializeComponent();
@@ -28,13 +36,12 @@ namespace BiometricDb
         private void button2_Click(object sender, EventArgs e)
         {
             gridCleanUp();
-            con = new System.Data.SqlClient.SqlConnection();
-            con.ConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
-            con.Open();
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
+            conn.ConnectionString = connectionAddress;
+            conn.Open();
             String commandString = createCommand();
-
-          
-            using (var cmd = new SqlCommand(commandString, con))
+        
+            using (var cmd = new MySqlCommand(commandString, conn))
            
             {
                 cmd.Parameters.AddWithValue("@id", textBox10.Text);
@@ -42,7 +49,7 @@ namespace BiometricDb
                 //cmd.Parameters.AddWithValue("@surname", textBox2.Text);
 
 
-                SqlDataAdapter daEmployee = new SqlDataAdapter(cmd);
+                MySqlDataAdapter daEmployee = new MySqlDataAdapter(cmd);
                 DataSet dsEmployeeSearch = new DataSet("employeeSearch");
                 daEmployee.MissingSchemaAction = MissingSchemaAction.AddWithKey;
                 daEmployee.Fill(dsEmployeeSearch, "EmployeeDetails");

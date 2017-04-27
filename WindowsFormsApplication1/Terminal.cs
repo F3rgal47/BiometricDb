@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using MySql.Data;
+using MySql.Data.MySqlClient;
 
 namespace BiometricDb
 {
@@ -16,19 +18,24 @@ namespace BiometricDb
     {
         int EmployeeAccesLevel;
         int accessLevel, locationId;
-        String connectionAddress = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
-        System.Data.SqlClient.SqlConnection con;
+        //String connectionAddress = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
+        //String connectionAddress = "Data Source=jdickinson03.public.cs.qub.ac.uk;Initial Catalog=jdickinson03;User ID=jdickinson03;Password=5rmp7b1x2hzsv42f";
+        //System.Data.SqlClient.SqlConnection con;
+        String connectionAddress = "server=jdickinson03.students.cs.qub.ac.uk;user id=jdickinson03;pwd=pbx0c2qm8z5q733n;database=jdickinson03;persistsecurityinfo=True";
+        //System.Data.SqlClient.SqlConnection con;
+        MySqlConnection conn = new MySqlConnection("server=jdickinson03.students.cs.qub.ac.uk;user id=jdickinson03;pwd=pbx0c2qm8z5q733n;database=jdickinson03;persistsecurityinfo=True");           
+       
         public Terminal()
         {
             InitializeComponent();
-            con = new System.Data.SqlClient.SqlConnection();
-            con.ConnectionString = connectionAddress;
-            con.Open();
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
+            conn.ConnectionString = connectionAddress;
+            conn.Open();
 
-            using (var cmd = new SqlCommand("Select * from Locations", con))
+            using (var cmd = new MySqlCommand("Select * from Locations", conn))
             {
 
-                SqlDataAdapter daLocation = new SqlDataAdapter(cmd);
+                MySqlDataAdapter daLocation = new MySqlDataAdapter(cmd);
                 DataSet dsLocationSearch = new DataSet("LocationSearch");
                 daLocation.MissingSchemaAction = MissingSchemaAction.AddWithKey;
                 daLocation.Fill(dsLocationSearch, "Locations");
@@ -60,17 +67,17 @@ namespace BiometricDb
             //    MessageBox.Show("Please Enter Employee Id");
             //} 
             //else{
-            con = new System.Data.SqlClient.SqlConnection();
-            con.ConnectionString = connectionAddress;
-            con.Open();
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
+            conn.ConnectionString = connectionAddress;
+            conn.Open();
 
 
-            using (var cmd = new SqlCommand("Select * from EmployeeDetails where BiometricMarker = @bioMarker", con))
+            using (var cmd = new MySqlCommand("Select * from EmployeeDetails where BiometricMarker = @bioMarker", conn))
             {
                 int Biomarker = Int32.Parse(textBox10.Text);
                 cmd.Parameters.AddWithValue("@bioMarker", Biomarker);
 
-                SqlDataAdapter daEmployee = new SqlDataAdapter(cmd);
+                MySqlDataAdapter daEmployee = new MySqlDataAdapter(cmd);
                 DataSet dsEmployeeSearch = new DataSet("employeeSearch");
                 daEmployee.MissingSchemaAction = MissingSchemaAction.AddWithKey;
                 daEmployee.Fill(dsEmployeeSearch, "EmployeeDetails");
@@ -127,7 +134,7 @@ namespace BiometricDb
                 }
 
             }
-            con.Close();
+            conn.Close();
             updateAndcleanUp();
         }
 
@@ -139,13 +146,13 @@ namespace BiometricDb
 
             if (textBox5.Text == "Granted")
             {
-                con.ConnectionString = connectionAddress;
-                con.Open();
+                conn.ConnectionString = connectionAddress;
+                conn.Open();
 
                 String query = "INSERT INTO EmployeeAccessHistory(EmployeeId,EmployeeForename,EmployeeSurname, AreaId,AreaName, TimeOfAccess, AccessType, Date) VALUES(@employeeId, @employeeForename, @employeeSurname, @areaId, @areaName, @time, @accessType, @date)";
                
 
-                using (SqlCommand cmd = new SqlCommand(query, con))
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
                   
                     cmd.Parameters.AddWithValue("@employeeId", textBox2.Text);
@@ -170,7 +177,7 @@ namespace BiometricDb
 
                     // execute the insert statement and store the result
                     cmd.ExecuteNonQuery();
-                    con.Close();
+                    conn.Close();
 
                 }
             }
@@ -199,11 +206,11 @@ namespace BiometricDb
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             
-            using (var cmd = new SqlCommand("Select * from Locations WHERE LocationName = @locationName", con))
+            using (var cmd = new MySqlCommand("Select * from Locations WHERE LocationName = @locationName", conn))
             {
 
                 cmd.Parameters.AddWithValue("@locationName", this.comboBox1.GetItemText(this.comboBox1.SelectedItem));
-                SqlDataAdapter daLocation = new SqlDataAdapter(cmd);
+                MySqlDataAdapter daLocation = new MySqlDataAdapter(cmd);
                 DataSet dsLocationSearch = new DataSet("LocationSearch");
                 daLocation.MissingSchemaAction = MissingSchemaAction.AddWithKey;
                 daLocation.Fill(dsLocationSearch, "Locations");
