@@ -33,6 +33,7 @@ namespace BiometricDb
             conn.ConnectionString = connectionAddress;
             conn.Open();
 
+            //populate the locations comboBox before opening the terminal
             using (var cmd = new MySqlCommand("Select * from Locations", conn))
             {
 
@@ -69,7 +70,7 @@ namespace BiometricDb
             conn.ConnectionString = connectionAddress;
             conn.Open();
 
-
+            // search for a employee using the fingerprint they input
             using (var cmd = new MySqlCommand("Select * from EmployeeDetails where BiometricMarker = @bioMarker", conn))
             {
                 int Biomarker = Int32.Parse(textBox10.Text);
@@ -118,7 +119,7 @@ namespace BiometricDb
                 buttonGo.Enabled = false;
                 textBox10.Enabled = false;
                
-
+                //check the access level of the employee compared to the required access level.
                 if (EmployeeAccesLevel >= accessLevel)
                 {
                     textBox5.Text = "Granted";
@@ -142,7 +143,7 @@ namespace BiometricDb
 
         public async void updateAndcleanUp()
         {
-
+            //Inserting employees details in employeeAccessHistory table 
             if (textBox5.Text == "Granted")
             {
                 conn.ConnectionString = connectionAddress;
@@ -182,7 +183,7 @@ namespace BiometricDb
 
                 }
             }
-        
+            //wait five seconds then refresh the terminal
             await Task.Delay(5000);
             textBox10.Text = "";
             textBox1.Text = "";
@@ -201,16 +202,12 @@ namespace BiometricDb
             buttonGo.Enabled = false;
             comboBox2.Text = "";
             
-            
-
-
-
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            // this code collects the Location Id of the selected search for later use
+            // this code collects the Location Id of the selected location for later use
             using (var cmd = new MySqlCommand("Select * from Locations WHERE LocationName = @locationName", conn))
             {
 
@@ -233,9 +230,9 @@ namespace BiometricDb
                 }
             }
 
-            using (var cmd = new MySqlCommand("Select * from LocationAreas WHERE LocationId = " + locationId, conn)) // populate combobox 3 with areas from selected location
+            using (var cmd = new MySqlCommand("Select * from LocationAreas WHERE LocationId = " + locationId, conn)) 
             {
-
+                // populate Area combobox with areas from selected location
                 MySqlDataAdapter daArea = new MySqlDataAdapter(cmd);
                 DataSet dsArea = new DataSet("AreaSearch");
                 daArea.MissingSchemaAction = MissingSchemaAction.AddWithKey;
@@ -267,7 +264,8 @@ namespace BiometricDb
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            using (var cmd = new MySqlCommand("Select * from LocationAreas WHERE AreaName = @areaName", conn)) // grab Area Id
+            // grab Area Id from the selected area in combobox3 
+            using (var cmd = new MySqlCommand("Select * from LocationAreas WHERE AreaName = @areaName", conn)) 
             {
 
                 cmd.Parameters.AddWithValue("@areaName", this.comboBox3.GetItemText(this.comboBox3.SelectedItem));
