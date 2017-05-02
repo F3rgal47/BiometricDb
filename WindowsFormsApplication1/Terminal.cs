@@ -14,6 +14,7 @@ using MySql.Data.MySqlClient;
 
 namespace BiometricDb
 {
+
     public partial class Terminal : Form
     {
         int EmployeeAccesLevel;
