@@ -229,7 +229,6 @@
             this.Controls.Add(this.textBox1);
             this.Name = "SearchEmployee";
             this.Text = "Enter Employee Id";
-            this.Load += new System.EventHandler(this.SearchEmployee_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

@@ -44,8 +44,8 @@ namespace BiometricDb
         private void button1_Click(object sender, EventArgs e)
         {
             this.Visible = false;
-            AreaMaintenance AreaMaintenanceForm = new AreaMaintenance();
-            AreaMaintenanceForm.ShowDialog();
+            AreaMaintenance areaMaintenanceForm = new AreaMaintenance();
+            areaMaintenanceForm.ShowDialog();
             this.Visible = true;
         }
     }

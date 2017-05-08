@@ -56,8 +56,6 @@
             this.textBox10 = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.textBox11 = new System.Windows.Forms.TextBox();
             this.buttonFingerReg = new System.Windows.Forms.Button();
             this.buttonNew = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
@@ -67,9 +65,14 @@
             this.textBox13 = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label14 = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.buttonClear = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -333,31 +336,16 @@
             this.comboBox1.Size = new System.Drawing.Size(136, 21);
             this.comboBox1.TabIndex = 29;
             // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(204, 232);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(86, 13);
-            this.label14.TabIndex = 30;
-            this.label14.Text = "Biometric Marker";
-            // 
-            // textBox11
-            // 
-            this.textBox11.Enabled = false;
-            this.textBox11.Location = new System.Drawing.Point(289, 229);
-            this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(136, 20);
-            this.textBox11.TabIndex = 31;
-            // 
             // buttonFingerReg
             // 
             this.buttonFingerReg.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.buttonFingerReg.Enabled = false;
             this.buttonFingerReg.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonFingerReg.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.buttonFingerReg.Location = new System.Drawing.Point(271, 255);
+            this.buttonFingerReg.Location = new System.Drawing.Point(289, 353);
             this.buttonFingerReg.Name = "buttonFingerReg";
-            this.buttonFingerReg.Size = new System.Drawing.Size(164, 34);
+            this.buttonFingerReg.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.buttonFingerReg.Size = new System.Drawing.Size(136, 34);
             this.buttonFingerReg.TabIndex = 32;
             this.buttonFingerReg.Text = "Register Finger";
             this.buttonFingerReg.UseVisualStyleBackColor = false;
@@ -450,12 +438,54 @@
             this.panel2.Size = new System.Drawing.Size(167, 199);
             this.panel2.TabIndex = 40;
             // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(199, 266);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(56, 13);
+            this.label14.TabIndex = 30;
+            this.label14.Text = "Fingerprint";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBox2.Location = new System.Drawing.Point(309, 232);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(96, 108);
+            this.pictureBox2.TabIndex = 41;
+            this.pictureBox2.TabStop = false;
+            // 
+            // panel3
+            // 
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel3.Location = new System.Drawing.Point(296, 229);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(120, 119);
+            this.panel3.TabIndex = 42;
+            // 
+            // buttonClear
+            // 
+            this.buttonClear.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.buttonClear.Enabled = false;
+            this.buttonClear.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonClear.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.buttonClear.Location = new System.Drawing.Point(587, 346);
+            this.buttonClear.Name = "buttonClear";
+            this.buttonClear.Size = new System.Drawing.Size(136, 34);
+            this.buttonClear.TabIndex = 43;
+            this.buttonClear.Text = "Clear Form";
+            this.buttonClear.UseVisualStyleBackColor = false;
+            this.buttonClear.Click += new System.EventHandler(this.button1_Click_1);
+            // 
             // EmployeeMaintenance
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(807, 349);
+            this.ClientSize = new System.Drawing.Size(807, 399);
+            this.Controls.Add(this.buttonClear);
+            this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.textBox13);
@@ -465,7 +495,6 @@
             this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.buttonNew);
             this.Controls.Add(this.buttonFingerReg);
-            this.Controls.Add(this.textBox11);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label13);
@@ -493,12 +522,14 @@
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.buttonBrowsePhoto);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panel3);
             this.Name = "EmployeeMaintenance";
             this.Text = "New Employee";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -534,8 +565,6 @@
         private System.Windows.Forms.TextBox textBox10;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.Button buttonFingerReg;
         private System.Windows.Forms.Button buttonNew;
         private System.Windows.Forms.Button buttonDelete;
@@ -545,5 +574,9 @@
         private System.Windows.Forms.TextBox textBox13;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Button buttonClear;
     }
 }

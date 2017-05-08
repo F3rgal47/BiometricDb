@@ -33,13 +33,12 @@
             this.label8 = new System.Windows.Forms.Label();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.buttonGo = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox10 = new System.Windows.Forms.TextBox();
-            this.buttonGo = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -53,10 +52,12 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -65,13 +66,14 @@
             this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.comboBox3);
             this.panel1.Controls.Add(this.label6);
+            this.panel1.Controls.Add(this.buttonGo);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.comboBox2);
             this.panel1.Controls.Add(this.comboBox1);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(528, 100);
+            this.panel1.Size = new System.Drawing.Size(528, 127);
             this.panel1.TabIndex = 3;
             // 
             // label8
@@ -105,6 +107,20 @@
             this.label6.Size = new System.Drawing.Size(225, 16);
             this.label6.TabIndex = 33;
             this.label6.Text = "Select if the user is exiting or entering";
+            // 
+            // buttonGo
+            // 
+            this.buttonGo.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.buttonGo.Enabled = false;
+            this.buttonGo.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonGo.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.buttonGo.Location = new System.Drawing.Point(376, 90);
+            this.buttonGo.Name = "buttonGo";
+            this.buttonGo.Size = new System.Drawing.Size(60, 31);
+            this.buttonGo.TabIndex = 34;
+            this.buttonGo.Text = "Set";
+            this.buttonGo.UseVisualStyleBackColor = false;
+            this.buttonGo.Click += new System.EventHandler(this.buttonGo_Click);
             // 
             // label5
             // 
@@ -154,34 +170,11 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.25F);
             this.label1.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.label1.Location = new System.Drawing.Point(13, 115);
+            this.label1.Location = new System.Drawing.Point(12, 133);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(298, 25);
             this.label1.TabIndex = 4;
             this.label1.Text = "Enter \"Fingerprint\" to continue";
-            // 
-            // textBox10
-            // 
-            this.textBox10.Enabled = false;
-            this.textBox10.Location = new System.Drawing.Point(13, 143);
-            this.textBox10.Multiline = true;
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(151, 29);
-            this.textBox10.TabIndex = 27;
-            // 
-            // buttonGo
-            // 
-            this.buttonGo.BackColor = System.Drawing.SystemColors.HotTrack;
-            this.buttonGo.Enabled = false;
-            this.buttonGo.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonGo.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.buttonGo.Location = new System.Drawing.Point(170, 141);
-            this.buttonGo.Name = "buttonGo";
-            this.buttonGo.Size = new System.Drawing.Size(60, 31);
-            this.buttonGo.TabIndex = 34;
-            this.buttonGo.Text = "Go";
-            this.buttonGo.UseVisualStyleBackColor = false;
-            this.buttonGo.Click += new System.EventHandler(this.buttonNew_Click);
             // 
             // label12
             // 
@@ -263,11 +256,10 @@
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.textBox3);
             this.panel2.Controls.Add(this.panel3);
-            this.panel2.Location = new System.Drawing.Point(11, 184);
+            this.panel2.Location = new System.Drawing.Point(10, 202);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(475, 229);
             this.panel2.TabIndex = 45;
-            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
             // label4
             // 
@@ -301,7 +293,7 @@
             // 
             this.textBox5.Enabled = false;
             this.textBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox5.Location = new System.Drawing.Point(340, 115);
+            this.textBox5.Location = new System.Drawing.Point(339, 133);
             this.textBox5.Multiline = true;
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(136, 39);
@@ -317,19 +309,30 @@
             this.label7.Size = new System.Drawing.Size(0, 16);
             this.label7.TabIndex = 47;
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBox2.Location = new System.Drawing.Point(334, 440);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(152, 188);
+            this.pictureBox2.TabIndex = 48;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Visible = false;
+            // 
             // Terminal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HighlightText;
-            this.ClientSize = new System.Drawing.Size(489, 438);
+            this.ClientSize = new System.Drawing.Size(489, 453);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.textBox5);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.buttonGo);
-            this.Controls.Add(this.textBox10);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pictureBox2);
             this.Name = "Terminal";
             this.Text = "Terminal";
             this.panel1.ResumeLayout(false);
@@ -338,6 +341,7 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -348,7 +352,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox10;
         private System.Windows.Forms.Button buttonGo;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label10;
@@ -369,5 +372,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }

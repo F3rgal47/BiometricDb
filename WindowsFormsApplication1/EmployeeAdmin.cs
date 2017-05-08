@@ -51,8 +51,8 @@ namespace BiometricDb
         private void button1_Click(object sender, EventArgs e)
         {
             this.Visible = false;
-            ActivityReport ActivityReportForm = new ActivityReport();
-            ActivityReportForm.ShowDialog();
+            ActivityReport activityReportForm = new ActivityReport();
+            activityReportForm.ShowDialog();
             this.Visible = true;
         }
     }

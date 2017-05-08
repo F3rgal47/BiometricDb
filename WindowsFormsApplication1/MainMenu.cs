@@ -26,20 +26,23 @@ namespace BiometricDb
            this.Visible=true;
         }
 
-        //private void button_3_Click(object sender, EventArgs e)
-        //{
-        //    this.Visible = false;
-        //    LocationAdmin locationForm = new LocationAdmin();
-        //    locationForm.ShowDialog();
-        //    this.Visible = true;
-        //}
-
         private void button2_Click(object sender, EventArgs e)
         {
             this.Visible = false;
             Terminal accessForm = new Terminal();
             accessForm.ShowDialog();
             this.Visible = true;
+
+            string checkRestartFromTerminal = Terminal.restart;
+
+            if (checkRestartFromTerminal == "1")
+            {
+                this.Visible = false;
+                Terminal accessFormRestart = new Terminal();
+                accessFormRestart.ShowDialog();
+                this.Visible = true;
+            }
+
         }
 
         private void button_3_Click(object sender, EventArgs e)
@@ -49,9 +52,5 @@ namespace BiometricDb
             locationForm.ShowDialog();
             this.Visible = true;
         }
-
-
-
-      
     }
 }

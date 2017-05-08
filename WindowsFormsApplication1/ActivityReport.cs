@@ -37,6 +37,7 @@ namespace BiometricDb
 
             using (var cmd = new MySqlCommand("Select * from Locations", conn))
             {
+                // Grab all locations from the database and populate the locations comboBox.
                 String value, location;
                 MySqlDataAdapter daLocation = new MySqlDataAdapter(cmd);
                 DataSet dsLocationSearch = new DataSet("LocationSearch");
@@ -56,16 +57,16 @@ namespace BiometricDb
                     comboBox1.Items.Add((locationName));
                     comboBox1.ValueMember = locationAccessLevel;
                     comboBox1.DisplayMember = locationName;
-
                 }
 
-                //setting up date/time pickers
+                // Setting up date/time pickers.
                 dateTimePicker1.Value = DateTime.Today;
                 dateTimePicker2.Value = DateTime.Now.AddHours(-1);
                 dateTimePicker2.MaxDate = DateTime.Parse("23:59:59");
+
                 if (dateTimePicker2.Value >= DateTime.Parse("22:59:59"))
                 {
-                    // setting the date/time picker to 1 min before minight otherwise system crashes
+                    // Setting the date/time picker to 1 min before minight otherwise system crashes.
                     dateTimePicker3.Value = DateTime.Parse("23:59:59");
                 }
                 else
@@ -111,14 +112,12 @@ namespace BiometricDb
         private void button2_Click(object sender, EventArgs e)
         {
             gridCleanUp();
-            if (checkBox1.Checked == true) // If searching by employee
+            // If searching by employee.
+            if (checkBox1.Checked == true) 
             {
-                String commandString = createCommand();
-
-
+                string commandString = createCommand();
                 using (var cmd = new MySqlCommand(commandString, conn))
                 {
-
 
                     string timeFrom = dateTimePicker2.Value.ToString("HH:mm:ss");
                     string timeTo = dateTimePicker3.Value.ToString("HH:mm:ss");
@@ -128,9 +127,7 @@ namespace BiometricDb
                     cmd.Parameters.AddWithValue("@timeTo", timeTo);
                     cmd.Parameters.AddWithValue("@employeeId", textBox10.Text);
 
-
-
-                    // Fix this nai
+                    
                     MySqlDataAdapter daLocation = new MySqlDataAdapter(cmd);
                     DataSet dsLocationSearch = new DataSet("LocationSearch");
                     daLocation.MissingSchemaAction = MissingSchemaAction.AddWithKey;
@@ -138,8 +135,6 @@ namespace BiometricDb
 
                     DataTable tblLocationDetails;
                     tblLocationDetails = dsLocationSearch.Tables["Locations"];
-
-
                     int row = dsLocationSearch.Tables["Locations"].Rows.Count - 1;
 
                     for (int r = 0; r <= row; r++)
@@ -161,7 +156,8 @@ namespace BiometricDb
 
             }
 
-            else if (checkBox2.Checked == true) // If searching by Location
+            // If searching by Location.
+            else if (checkBox2.Checked == true) 
             {
                 using (var cmd = new MySqlCommand("Select EmployeeID, EmployeeForename, EmployeeSurname, LocationName, AreaName, AccessType, TimeOfAccess, Date from EmployeeAccessHistory WHERE LocationId = @locationId AND AreaId = @areaId And Date like '" + dateTimePicker1.Value.ToShortDateString() + "%' and TimeOfAccess >= @timeFrom and TimeOfAccess <= @timeTo  ", conn))
                 {
@@ -259,9 +255,9 @@ namespace BiometricDb
                 }
             }
 
-            using (var cmd = new MySqlCommand("Select * from LocationAreas WHERE LocationId = " + locationId, conn)) // populate combobox 3 with areas from selected location
+            // Populate combobox 3 with areas from selected location.
+            using (var cmd = new MySqlCommand("Select * from LocationAreas WHERE LocationId = " + locationId, conn))
             {
-
                 MySqlDataAdapter daArea = new MySqlDataAdapter(cmd);
                 DataSet dsArea = new DataSet("AreaSearch");
                 daArea.MissingSchemaAction = MissingSchemaAction.AddWithKey;
@@ -280,8 +276,6 @@ namespace BiometricDb
                     comboBox3.Items.Add((AreaName));
                     comboBox3.ValueMember = locationAccessLevel;
                     comboBox3.DisplayMember = AreaName;
-                   
-
                 }
             }
 
@@ -297,34 +291,34 @@ namespace BiometricDb
 
         private void button4_Click(object sender, EventArgs e)
         {
-            // creating Excel Application
+            // Creating Excel Application.
             Microsoft.Office.Interop.Excel._Application app = new Microsoft.Office.Interop.Excel.Application();
 
-            // creating new WorkBook within Excel application
+            // Creating new WorkBook within Excel application.
             Microsoft.Office.Interop.Excel._Workbook workbook = app.Workbooks.Add(Type.Missing);
 
 
-            // creating new Excelsheet in workbook
+            // Creating new Excelsheet in workbook.
             Microsoft.Office.Interop.Excel._Worksheet worksheet = null;
 
-            // see the excel sheet behind the program
+            // See the excel sheet behind the program.
             app.Visible = true;
 
-            // get the reference of first sheet. By default its name is Sheet1.
-            // store its reference to worksheet
+            // Get the reference of first sheet. By default its name is Sheet1.
+            // Store its reference to worksheet.
             worksheet = workbook.Sheets["Sheet1"];
             worksheet = workbook.ActiveSheet;
 
-            // changing the name of active sheet
+            // Changing the name of active sheet.
             worksheet.Name = "Exported from Activity Report";
 
-            //Add title to the report
+            // Add title to the report.
             DateTime dateTime = DateTime.UtcNow.Date;
             worksheet.Cells[1] = "Employee Activity Report        " + dateTime.ToString("dd/MM/yyyy");
             worksheet.get_Range("A1", "A1").Font.Size = 14;
             worksheet.get_Range("A1", "A1").Font.Bold = true;
 
-            // storing header part in Excel
+            // Storing header part in Excel.
             for (int i = 2; i < dataGridView1.Columns.Count + 2; i++)
             {
                 worksheet.get_Range("A1", "I3").Font.Size = 12;
@@ -333,27 +327,28 @@ namespace BiometricDb
                 worksheet.Rows[3].Columns.Autofit();
             }
 
-            // storing Each row and column value to excel sheet
+            // Storing Each row and column value to excel sheet.
             for (int i = 0; i < dataGridView1.Rows.Count; i++)
             {
                 for (int j = 0; j < dataGridView1.Columns.Count; j++)
                 {
                     worksheet.Cells[i + 4, j + 2] = dataGridView1.Rows[i].Cells[j].Value.ToString();
-                    //auto fit columns for any size of text
+                    // Auto fit columns for any size of text.
                     worksheet.Rows[i + 5].Autofit();
-                    //apply border to cell to form a grid
+                    // Apply border to cell to form a grid.
                     worksheet.Cells[i + 4, j + 2].Borders.Color = System.Drawing.Color.Black.ToArgb();
                 }
             }
 
-            //sets Columns to autofit text
+            // Sets Columns to autofit text.
             worksheet.Columns.AutoFit();
            
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Close(); // cancel button returns to previous form
+            // Cancel button returns to previous form.
+            this.Close();
         }
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)

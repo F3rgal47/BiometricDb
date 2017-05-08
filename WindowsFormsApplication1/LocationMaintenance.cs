@@ -17,11 +17,11 @@ namespace BiometricDb
     public partial class LocationMaintenance : Form
     {
         int accessLevel, locationId;
-        //System.Data.SqlClient.SqlConnection con;
-        //String connectionAddress = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
-        //String connectionAddress = "Data Source=jdickinson03.public.cs.qub.ac.uk;Initial Catalog=jdickinson03;User ID=jdickinson03;Password=5rmp7b1x2hzsv42f";
+        // System.Data.SqlClient.SqlConnection con;
+        // String connectionAddress = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\FERGAL O NEILL\\Documents\\Fergal Final Year Folder\\Software Engineering Project\\BiometricDb\\BiometricDb\\WindowsFormsApplication1\\InD.mdf;Integrated Security=True";
+        // String connectionAddress = "Data Source=jdickinson03.public.cs.qub.ac.uk;Initial Catalog=jdickinson03;User ID=jdickinson03;Password=5rmp7b1x2hzsv42f";
 
-        String connectionAddress = "server=jdickinson03.students.cs.qub.ac.uk;user id=jdickinson03;pwd=pbx0c2qm8z5q733n;database=jdickinson03;persistsecurityinfo=True";
+        string connectionAddress = "server=jdickinson03.students.cs.qub.ac.uk;user id=jdickinson03;pwd=pbx0c2qm8z5q733n;database=jdickinson03;persistsecurityinfo=True";
 
         MySqlConnection conn = new MySqlConnection();
         public LocationMaintenance()
@@ -44,8 +44,8 @@ namespace BiometricDb
 
                 foreach (DataRow drCurrent in tblLocationDetails.Rows)
                 {
-                    String locationName = drCurrent["LocationName"].ToString();
-                    String locationAccessLevel = drCurrent["AccessLevel"].ToString();
+                    string locationName = drCurrent["LocationName"].ToString();
+                    string locationAccessLevel = drCurrent["AccessLevel"].ToString();
 
                     comboBox2.Items.Add((locationName));
                     comboBox2.ValueMember = locationAccessLevel;
@@ -72,7 +72,6 @@ namespace BiometricDb
             conn = new MySql.Data.MySqlClient.MySqlConnection();
             conn.ConnectionString = connectionAddress;
             conn.Open();
-
 
             using (var cmd = new MySqlCommand("Select * from Locations where Id = @id", conn))
             {
@@ -115,17 +114,17 @@ namespace BiometricDb
 
             if (result > 0)
             {
-                MessageBox.Show("Location successfully deleted");
+                MessageBox.Show("Location Successfully Deleted");
             }
             else
             {
                 MessageBox.Show("Error deleting Location");
             }
 
-            cleanup();
+            Cleanup();
         }
 
-        public void cleanup()
+        public void Cleanup()
         {
 
             textBox10.Text = "";
@@ -178,7 +177,7 @@ namespace BiometricDb
                 cmd.ExecuteNonQuery();
                 MessageBox.Show("Successfully Added");
                 conn.Close();
-                cleanup();
+                Cleanup();
 
 
             }
@@ -202,7 +201,7 @@ namespace BiometricDb
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            // this code collects the area Id of the selected search for later use
+            // This code collects the area Id of the selected search for later use.
              using (var cmd = new MySqlCommand("Select * from Locations WHERE LocationName = @locationName", conn))
             {
 
@@ -225,9 +224,6 @@ namespace BiometricDb
             }
         
         }
-        }
-
-       
-
-    }
+      }
+  }
 
